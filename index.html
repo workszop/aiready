@@ -10,7 +10,6 @@
             --primary-hover: #2563eb;
             --selected: #f97316;
         }
-        /* Rest of the CSS remains the same */
         body {
             font-family: system-ui, -apple-system, sans-serif;
             margin: 0;
@@ -84,7 +83,6 @@
     </style>
 </head>
 <body>
-    <!-- Rest of the HTML and JavaScript code remains exactly the same -->
     <div id="app" class="card"></div>
     
     <script>
@@ -95,6 +93,7 @@
                 this.currentSection = '';
                 this.answers = {};
                 this.showResults = false;
+                this.currentQuestionIndex = 0;
             }
 
             async initialize() {
@@ -121,7 +120,7 @@
                         const [question, ...options] = line.split('|');
                         if (question && options.length) {
                             sections[currentSection].push({
-                                id: sections[currentSection].length + 1,
+                                id: `${currentSection}-${sections[currentSection].length + 1}`,
                                 text: question.trim(),
                                 options: options.map(o => o.trim()),
                                 scores: options.map((_, i) => options.length - i)
@@ -151,15 +150,21 @@
 
             calculateScore(section) {
                 const sectionData = this.questions[section];
-                const actualScore = sectionData.reduce((sum, q) => 
-                    sum + (this.answers[q.id] || 0), 0);
+                const sectionAnswers = sectionData
+                    .map(q => this.answers[q.id])
+                    .filter(score => score !== undefined);
+                
+                if (sectionAnswers.length === 0) return 0;
+                
+                const actualScore = sectionAnswers.reduce((sum, score) => sum + score, 0);
                 return (actualScore / (sectionData.length * 5)) * 100;
             }
 
             calculateProgress() {
                 const totalQuestions = Object.values(this.questions)
-                    .flat().length;
-                return (Object.keys(this.answers).length / totalQuestions) * 100;
+                    .reduce((sum, section) => sum + section.length, 0);
+                const answeredQuestions = Object.keys(this.answers).length;
+                return (answeredQuestions / totalQuestions) * 100;
             }
 
             handleAnswer(id, score) {
@@ -173,6 +178,13 @@
                 
                 if (currentIndex < sections.length - 1) {
                     this.currentSection = sections[currentIndex + 1];
+                    // Clear selections for questions in the new section
+                    const newSectionQuestions = this.questions[this.currentSection];
+                    newSectionQuestions.forEach(q => {
+                        if (!this.answers[q.id]) {
+                            delete this.answers[q.id];
+                        }
+                    });
                 } else {
                     this.showResults = true;
                 }
@@ -183,13 +195,14 @@
                 this.answers = {};
                 this.showResults = false;
                 this.currentSection = Object.keys(this.questions)[0];
+                this.currentQuestionIndex = 0;
                 this.render();
             }
 
             renderResults() {
-                const overallScore = Object.keys(this.questions)
-                    .reduce((sum, sec) => sum + this.calculateScore(sec), 0) / 
-                    Object.keys(this.questions).length;
+                const sections = Object.keys(this.questions);
+                const overallScore = sections
+                    .reduce((sum, sec) => sum + this.calculateScore(sec), 0) / sections.length;
                 
                 return `
                     <h1 class="title">Wyniki Oceny Gotowości AI</h1>
@@ -200,7 +213,7 @@
                         ${this.getScoreLabel(overallScore)}
                     </div>
                     <div class="results-grid">
-                        ${Object.keys(this.questions).map(section => {
+                        ${sections.map(section => {
                             const score = this.calculateScore(section);
                             return `
                                 <div class="result-card">
@@ -248,7 +261,7 @@
                                 ${q.options.map((option, idx) => `
                                     <button 
                                         class="button ${this.answers[q.id] === q.scores[idx] ? 'selected' : ''}"
-                                        onclick="survey.handleAnswer(${q.id}, ${q.scores[idx]})">
+                                        onclick="survey.handleAnswer('${q.id}', ${q.scores[idx]})">
                                         ${option}
                                     </button>
                                 `).join('')}
