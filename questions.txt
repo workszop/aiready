@@ -1,0 +1,41 @@
+#Infrastruktura Technologiczna
+Jak oceniasz obecną infrastrukturę technologiczną pod kątem wdrożenia rozwiązań AI?|Doskonała|Bardzo dobra|Dobra|Dostateczna|Niedostateczna
+Czy organizacja posiada dedykowane środowisko deweloperskie do rozwoju rozwiązań AI?|Tak|W trakcie tworzenia|Nie
+Czy infrastruktura spełnia wymagania dotyczące mocy obliczeniowej niezbędnej do trenowania modeli AI?|Tak, w pełni|Częściowo|Nie
+Czy posiadacie narzędzia do monitorowania wydajności infrastruktury AI?|Tak|W trakcie wdrażania|Nie
+Jak oceniasz skalowalność obecnej infrastruktury?|Doskonała|Bardzo dobra|Dobra|Dostateczna|Niedostateczna
+
+#Dane
+Czy organizacja posiada strategię zarządzania danymi?|Tak|W trakcie rozwoju|Nie
+Jak oceniasz jakość danych w organizacji?|Doskonała|Bardzo dobra|Dobra|Dostateczna|Niedostateczna
+Czy istnieją procesy walidacji i czyszczenia danych?|Tak, kompleksowe|Częściowe|Nie
+Czy dane są odpowiednio oznakowane i skategoryzowane?|Tak|Częściowo|Nie
+Jak oceniasz dostępność danych potrzebnych do trenowania modeli AI?|Doskonała|Bardzo dobra|Dobra|Dostateczna|Niedostateczna
+
+#Zespół i Umiejętności
+Czy posiadasz dedykowany zespół do projektów AI?|Tak|W trakcie formowania|Nie
+Jak oceniasz poziom kompetencji zespołu w zakresie AI?|Doskonały|Bardzo dobry|Dobry|Dostateczny|Niedostateczny
+Czy istnieje plan rozwoju kompetencji w zakresie AI?|Tak|W trakcie tworzenia|Nie
+Czy zespół ma doświadczenie w realizacji projektów AI?|Znaczące doświadczenie|Średnie doświadczenie|Małe doświadczenie|Brak doświadczenia
+Jak oceniasz współpracę między zespołami technicznymi a biznesowymi?|Doskonała|Bardzo dobra|Dobra|Dostateczna|Niedostateczna
+
+#Dojrzałość Organizacyjna
+Czy istnieje formalna strategia rozwoju AI w organizacji?|Tak|W trakcie tworzenia|Nie
+Jak oceniasz świadomość zarządu w zakresie możliwości i ograniczeń AI?|Doskonała|Bardzo dobra|Dobra|Dostateczna|Niedostateczna
+Czy istnieją procesy zarządzania ryzykiem związanym z AI?|Tak|W trakcie wdrażania|Nie
+Jak oceniasz kulturę innowacji w organizacji?|Doskonała|Bardzo dobra|Dobra|Dostateczna|Niedostateczna
+Czy istnieją mechanizmy oceny sukcesu projektów AI?|Tak|W trakcie rozwoju|Nie
+
+#Procesy Biznesowe
+Czy zidentyfikowano procesy biznesowe do optymalizacji przez AI?|Tak, kompleksowo|Częściowo|Nie
+Jak oceniasz gotowość procesów do automatyzacji?|Doskonała|Bardzo dobra|Dobra|Dostateczna|Niedostateczna
+Czy istnieją procedury wdrażania rozwiązań AI?|Tak|W trakcie tworzenia|Nie
+Jak oceniasz integrację AI z istniejącymi procesami biznesowymi?|Doskonała|Bardzo dobra|Dobra|Dostateczna|Niedostateczna
+Czy procesy są odpowiednio udokumentowane?|Tak, kompleksowo|Częściowo|Nie
+
+#Finansowanie
+Czy istnieje dedykowany budżet na projekty AI?|Tak|W trakcie planowania|Nie
+Jak oceniasz poziom inwestycji w rozwój AI?|Doskonały|Bardzo dobry|Dobry|Dostateczny|Niedostateczny
+Czy istnieje proces oceny zwrotu z inwestycji w AI?|Tak|W trakcie rozwoju|Nie
+Jak oceniasz dostępność środków na szkolenia w zakresie AI?|Doskonała|Bardzo dobra|Dobra|Dostateczna|Niedostateczna
+Czy organizacja ma plan finansowania długoterminowego rozwoju AI?|Tak|W trakcie tworzenia|Nie
