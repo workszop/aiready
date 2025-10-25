@@ -2,13 +2,21 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Readiness Assessment</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash/4.17.21/lodash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         :root {
             --primary: #3b82f6;
             --primary-hover: #2563eb;
             --selected: #f97316;
+            --success: #22c55e;
+            --warning: #eab308;
+            --danger: #ef4444;
+        }
+        * {
+            box-sizing: border-box;
         }
         body {
             font-family: system-ui, -apple-system, sans-serif;
@@ -29,6 +37,12 @@
             font-weight: bold;
             margin-bottom: 1rem;
         }
+        .subtitle {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
         .progress {
             height: 12px;
             background: #e5e7eb;
@@ -44,6 +58,17 @@
         .question {
             margin: 2rem 0;
         }
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        .question-number {
+            font-size: 0.875rem;
+            color: #666;
+            font-weight: 500;
+        }
         .button {
             background: var(--primary);
             color: white;
@@ -54,9 +79,16 @@
             width: 100%;
             margin: 4px 0;
             text-align: left;
+            font-size: 1rem;
+            transition: all 0.2s ease;
         }
-        .button:hover {
+        .button:hover:not(:disabled) {
             background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+        .button:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
         }
         .button.selected {
             background: var(--selected);
@@ -65,10 +97,25 @@
             opacity: 0.5;
             cursor: not-allowed;
         }
+        .button.secondary {
+            background: #6b7280;
+        }
+        .button.secondary:hover:not(:disabled) {
+            background: #4b5563;
+        }
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 2rem;
+        }
+        .button-group .button {
+            flex: 1;
+        }
         .results-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1rem;
+            margin: 2rem 0;
         }
         .result-card {
             padding: 1rem;
@@ -98,6 +145,11 @@
             color: #6b7280;
             border: 2px solid transparent;
             transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .section-indicator:hover {
+            background: #d1d5db;
+            transform: translateY(-2px);
         }
         .section-indicator.current {
             background: var(--primary);
@@ -109,6 +161,120 @@
         .section-indicator.completed {
             background: #d1fae5;
             color: #065f46;
+        }
+        .welcome-screen {
+            text-align: center;
+        }
+        .feature-list {
+            text-align: left;
+            margin: 2rem auto;
+            max-width: 500px;
+        }
+        .feature-item {
+            padding: 12px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        .review-section {
+            margin: 2rem 0;
+            padding: 1rem;
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+        .review-question {
+            padding: 1rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .review-question:last-child {
+            border-bottom: none;
+        }
+        .review-answer {
+            color: var(--selected);
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+        .recommendation-card {
+            margin: 1rem 0;
+            padding: 1rem;
+            border-left: 4px solid var(--primary);
+            background: #f0f9ff;
+            border-radius: 4px;
+        }
+        .recommendation-card.warning {
+            border-left-color: var(--warning);
+            background: #fefce8;
+        }
+        .recommendation-card.danger {
+            border-left-color: var(--danger);
+            background: #fef2f2;
+        }
+        .download-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin: 2rem 0;
+        }
+        .icon-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .card {
+                padding: 16px;
+            }
+            .title {
+                font-size: 1.25rem;
+            }
+            .button-group {
+                flex-direction: column;
+            }
+            .section-navigator {
+                gap: 4px;
+            }
+            .section-indicator {
+                min-width: 80px;
+                padding: 8px 4px;
+                font-size: 0.75rem;
+            }
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .kbd {
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-family: monospace;
+            font-size: 0.875rem;
+        }
+
+        .help-text {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 1rem;
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 6px;
         }
     </style>
 </head>
@@ -122,8 +288,13 @@
                 this.questions = {};
                 this.currentSection = '';
                 this.answers = {};
+                this.answerDetails = {}; // Store question text and selected option text
                 this.showResults = false;
+                this.showWelcome = true;
+                this.showReview = false;
                 this.currentQuestionIndex = 0;
+                this.oneQuestionMode = false;
+                this.loadFromLocalStorage();
             }
 
             async initialize() {
@@ -131,7 +302,10 @@
                     const response = await fetch('questions.txt');
                     const text = await response.text();
                     this.questions = this.parseQuestions(text);
-                    this.currentSection = Object.keys(this.questions)[0];
+                    if (!this.currentSection) {
+                        this.currentSection = Object.keys(this.questions)[0];
+                    }
+                    this.setupKeyboardNavigation();
                     this.render();
                 } catch (error) {
                     console.error('Error loading questions:', error);
@@ -141,7 +315,7 @@
             parseQuestions(text) {
                 const sections = {};
                 let currentSection = '';
-                
+
                 text.split('\n').forEach(line => {
                     if (line.startsWith('#')) {
                         currentSection = line.substring(1).trim();
@@ -158,8 +332,96 @@
                         }
                     }
                 });
-                
+
                 return sections;
+            }
+
+            setupKeyboardNavigation() {
+                document.addEventListener('keydown', (e) => {
+                    if (this.showWelcome || this.showResults) return;
+
+                    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        this.nextQuestion();
+                    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        this.previousQuestion();
+                    } else if (e.key >= '1' && e.key <= '5') {
+                        e.preventDefault();
+                        this.selectAnswerByNumber(parseInt(e.key) - 1);
+                    }
+                });
+            }
+
+            selectAnswerByNumber(index) {
+                if (!this.oneQuestionMode) return;
+
+                const currentQuestions = this.questions[this.currentSection];
+                const question = currentQuestions[this.currentQuestionIndex];
+                if (question && question.options[index]) {
+                    this.handleAnswer(question.id, question.scores[index], question, index);
+                }
+            }
+
+            nextQuestion() {
+                if (!this.oneQuestionMode) return;
+
+                const currentQuestions = this.questions[this.currentSection];
+                if (this.currentQuestionIndex < currentQuestions.length - 1) {
+                    this.currentQuestionIndex++;
+                    this.render();
+                } else {
+                    this.nextSection();
+                }
+            }
+
+            previousQuestion() {
+                if (!this.oneQuestionMode) return;
+
+                if (this.currentQuestionIndex > 0) {
+                    this.currentQuestionIndex--;
+                    this.render();
+                } else {
+                    this.previousSection();
+                }
+            }
+
+            previousSection() {
+                const sections = Object.keys(this.questions);
+                const currentIndex = sections.indexOf(this.currentSection);
+
+                if (currentIndex > 0) {
+                    this.currentSection = sections[currentIndex - 1];
+                    const prevSectionQuestions = this.questions[this.currentSection];
+                    this.currentQuestionIndex = prevSectionQuestions.length - 1;
+                    this.render();
+                }
+            }
+
+            saveToLocalStorage() {
+                localStorage.setItem('aiready_answers', JSON.stringify(this.answers));
+                localStorage.setItem('aiready_details', JSON.stringify(this.answerDetails));
+                localStorage.setItem('aiready_section', this.currentSection);
+                localStorage.setItem('aiready_index', this.currentQuestionIndex.toString());
+            }
+
+            loadFromLocalStorage() {
+                const savedAnswers = localStorage.getItem('aiready_answers');
+                const savedDetails = localStorage.getItem('aiready_details');
+                const savedSection = localStorage.getItem('aiready_section');
+                const savedIndex = localStorage.getItem('aiready_index');
+
+                if (savedAnswers) this.answers = JSON.parse(savedAnswers);
+                if (savedDetails) this.answerDetails = JSON.parse(savedDetails);
+                if (savedSection) this.currentSection = savedSection;
+                if (savedIndex) this.currentQuestionIndex = parseInt(savedIndex);
+            }
+
+            clearLocalStorage() {
+                localStorage.removeItem('aiready_answers');
+                localStorage.removeItem('aiready_details');
+                localStorage.removeItem('aiready_section');
+                localStorage.removeItem('aiready_index');
             }
 
             getScoreColor(score) {
@@ -183,9 +445,9 @@
                 const sectionAnswers = sectionData
                     .map(q => this.answers[q.id])
                     .filter(score => score !== undefined);
-                
+
                 if (sectionAnswers.length === 0) return 0;
-                
+
                 const actualScore = sectionAnswers.reduce((sum, score) => sum + score, 0);
                 return (actualScore / (sectionData.length * 5)) * 100;
             }
@@ -197,9 +459,42 @@
                 return (answeredQuestions / totalQuestions) * 100;
             }
 
+            getTotalQuestions() {
+                return Object.values(this.questions)
+                    .reduce((sum, section) => sum + section.length, 0);
+            }
+
             isSectionCompleted(section) {
                 const sectionData = this.questions[section];
                 return sectionData.every(q => this.answers[q.id] !== undefined);
+            }
+
+            getRecommendations(score, section) {
+                const recommendations = [];
+
+                if (score >= 80) {
+                    recommendations.push({
+                        type: 'success',
+                        text: `Doskonała gotowość w obszarze "${section}". Kontynuuj dobre praktyki i dziel się swoim doświadczeniem.`
+                    });
+                } else if (score >= 60) {
+                    recommendations.push({
+                        type: 'info',
+                        text: `Dobra gotowość w obszarze "${section}". Zidentyfikuj obszary do poprawy i stwórz plan działania.`
+                    });
+                } else if (score >= 40) {
+                    recommendations.push({
+                        type: 'warning',
+                        text: `Średnia gotowość w obszarze "${section}". Zalecane są inwestycje w szkolenia i infrastrukturę.`
+                    });
+                } else {
+                    recommendations.push({
+                        type: 'danger',
+                        text: `Niska gotowość w obszarze "${section}". Wymaga natychmiastowej uwagi i zasobów.`
+                    });
+                }
+
+                return recommendations;
             }
 
             renderSectionNavigator() {
@@ -214,7 +509,7 @@
                             else if (isCompleted) classes.push('completed');
 
                             return `
-                                <div class="${classes.join(' ')}">
+                                <div class="${classes.join(' ')}" onclick="survey.goToSection('${section}')">
                                     <div style="font-size: 0.75rem; opacity: 0.8;">Część ${index + 1}</div>
                                     <div>${section}</div>
                                 </div>
@@ -224,122 +519,427 @@
                 `;
             }
 
-            handleAnswer(id, score) {
-                this.answers[id] = score;
+            goToSection(section) {
+                this.currentSection = section;
+                this.currentQuestionIndex = 0;
                 this.render();
+            }
+
+            handleAnswer(id, score, question, optionIndex) {
+                this.answers[id] = score;
+                this.answerDetails[id] = {
+                    question: question.text,
+                    answer: question.options[optionIndex],
+                    score: score,
+                    section: this.currentSection
+                };
+                this.saveToLocalStorage();
+
+                if (this.oneQuestionMode) {
+                    setTimeout(() => this.nextQuestion(), 300);
+                } else {
+                    this.render();
+                }
             }
 
             nextSection() {
                 const sections = Object.keys(this.questions);
                 const currentIndex = sections.indexOf(this.currentSection);
-                
+
                 if (currentIndex < sections.length - 1) {
                     this.currentSection = sections[currentIndex + 1];
-                    // Clear selections for questions in the new section
-                    const newSectionQuestions = this.questions[this.currentSection];
-                    newSectionQuestions.forEach(q => {
-                        if (!this.answers[q.id]) {
-                            delete this.answers[q.id];
-                        }
-                    });
+                    this.currentQuestionIndex = 0;
                 } else {
-                    this.showResults = true;
+                    this.showReview = true;
                 }
+                this.render();
+            }
+
+            startSurvey(oneQuestionMode = false) {
+                this.showWelcome = false;
+                this.oneQuestionMode = oneQuestionMode;
                 this.render();
             }
 
             reset() {
                 this.answers = {};
+                this.answerDetails = {};
                 this.showResults = false;
+                this.showWelcome = true;
+                this.showReview = false;
                 this.currentSection = Object.keys(this.questions)[0];
                 this.currentQuestionIndex = 0;
+                this.clearLocalStorage();
                 this.render();
+            }
+
+            downloadJSON() {
+                const data = {
+                    timestamp: new Date().toISOString(),
+                    answers: this.answerDetails,
+                    scores: {}
+                };
+
+                Object.keys(this.questions).forEach(section => {
+                    data.scores[section] = this.calculateScore(section);
+                });
+
+                const overallScore = Object.values(data.scores).reduce((a, b) => a + b, 0) / Object.keys(data.scores).length;
+                data.overallScore = overallScore;
+
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `ai-readiness-${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+
+            downloadCSV() {
+                let csv = 'Sekcja,Pytanie,Odpowiedź,Wynik\n';
+
+                Object.values(this.answerDetails).forEach(detail => {
+                    csv += `"${detail.section}","${detail.question}","${detail.answer}",${detail.score}\n`;
+                });
+
+                csv += '\n\nPodsumowanie wyników\n';
+                csv += 'Sekcja,Wynik %\n';
+                Object.keys(this.questions).forEach(section => {
+                    const score = this.calculateScore(section);
+                    csv += `"${section}",${Math.round(score)}\n`;
+                });
+
+                const overallScore = Object.keys(this.questions)
+                    .reduce((sum, sec) => sum + this.calculateScore(sec), 0) / Object.keys(this.questions).length;
+                csv += `\n"Wynik ogólny",${Math.round(overallScore)}\n`;
+
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `ai-readiness-${new Date().toISOString().split('T')[0]}.csv`;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+
+            downloadPDF() {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                doc.setFontSize(18);
+                doc.text('Raport Gotowości AI', 20, 20);
+
+                doc.setFontSize(10);
+                doc.text(`Data: ${new Date().toLocaleDateString('pl-PL')}`, 20, 30);
+
+                const sections = Object.keys(this.questions);
+                const overallScore = sections.reduce((sum, sec) => sum + this.calculateScore(sec), 0) / sections.length;
+
+                doc.setFontSize(14);
+                doc.text(`Wynik ogólny: ${Math.round(overallScore)}%`, 20, 40);
+
+                let y = 55;
+                sections.forEach(section => {
+                    const score = this.calculateScore(section);
+                    doc.setFontSize(12);
+                    doc.text(`${section}: ${Math.round(score)}%`, 20, y);
+                    y += 10;
+
+                    if (y > 270) {
+                        doc.addPage();
+                        y = 20;
+                    }
+                });
+
+                doc.save(`ai-readiness-${new Date().toISOString().split('T')[0]}.pdf`);
+            }
+
+            renderWelcome() {
+                const totalQuestions = this.getTotalQuestions();
+                const estimatedTime = Math.ceil(totalQuestions * 0.5);
+
+                return `
+                    <div class="welcome-screen">
+                        <h1 class="title">Ocena Gotowości AI</h1>
+                        <p class="subtitle">
+                            Witamy w narzędziu do oceny gotowości Twojej organizacji do wdrożenia sztucznej inteligencji.
+                            To badanie pomoże Ci zidentyfikować mocne strony oraz obszary wymagające rozwoju.
+                        </p>
+
+                        <div class="feature-list">
+                            <div class="feature-item">
+                                <div class="feature-icon">✓</div>
+                                <div>${totalQuestions} pytań w ${Object.keys(this.questions).length} kategoriach</div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">⏱</div>
+                                <div>Szacowany czas: ~${estimatedTime} minut</div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">💾</div>
+                                <div>Automatyczny zapis postępu</div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">📊</div>
+                                <div>Szczegółowy raport z rekomendacjami</div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">⬇</div>
+                                <div>Eksport wyników (PDF, CSV, JSON)</div>
+                            </div>
+                        </div>
+
+                        <div class="button-group">
+                            <button class="button" onclick="survey.startSurvey(true)">
+                                Pytanie po pytaniu
+                            </button>
+                            <button class="button secondary" onclick="survey.startSurvey(false)">
+                                Wszystkie pytania
+                            </button>
+                        </div>
+
+                        <div class="help-text">
+                            <strong>Wskazówka:</strong> Tryb "Pytanie po pytaniu" pozwala skupić się na jednym pytaniu naraz.
+                            Użyj strzałek lub klawiszy 1-5 do nawigacji.
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderReview() {
+                const sections = Object.keys(this.questions);
+
+                return `
+                    <h2 class="title">Przegląd odpowiedzi</h2>
+                    <p class="subtitle">Sprawdź swoje odpowiedzi przed wyświetleniem wyników.</p>
+
+                    ${sections.map(section => {
+                        const sectionQuestions = this.questions[section];
+                        return `
+                            <div class="review-section">
+                                <h3 style="margin-top: 0; color: var(--primary);">${section}</h3>
+                                ${sectionQuestions.map(q => {
+                                    const detail = this.answerDetails[q.id];
+                                    return detail ? `
+                                        <div class="review-question">
+                                            <div style="font-weight: 500;">${detail.question}</div>
+                                            <div class="review-answer">→ ${detail.answer}</div>
+                                        </div>
+                                    ` : '';
+                                }).join('')}
+                            </div>
+                        `;
+                    }).join('')}
+
+                    <div class="button-group">
+                        <button class="button secondary" onclick="survey.showReview = false; survey.render()">
+                            Wróć do ankiety
+                        </button>
+                        <button class="button" onclick="survey.showResults = true; survey.showReview = false; survey.render()">
+                            Pokaż wyniki
+                        </button>
+                    </div>
+                `;
             }
 
             renderResults() {
                 const sections = Object.keys(this.questions);
                 const overallScore = sections
                     .reduce((sum, sec) => sum + this.calculateScore(sec), 0) / sections.length;
-                
+
+                const allRecommendations = [];
+                sections.forEach(section => {
+                    const score = this.calculateScore(section);
+                    allRecommendations.push(...this.getRecommendations(score, section));
+                });
+
                 return `
                     <h1 class="title">Wyniki Oceny Gotowości AI</h1>
                     <div class="score" style="color: ${this.getScoreColor(overallScore)}">
                         ${Math.round(overallScore)}%
                     </div>
-                    <div style="text-align: center; margin-bottom: 2rem">
+                    <div style="text-align: center; margin-bottom: 2rem; font-size: 1.25rem; font-weight: 500;">
                         ${this.getScoreLabel(overallScore)}
                     </div>
+
+                    <div class="download-buttons">
+                        <button class="button icon-button" onclick="survey.downloadJSON()">
+                            📄 JSON
+                        </button>
+                        <button class="button icon-button" onclick="survey.downloadCSV()">
+                            📊 CSV
+                        </button>
+                        <button class="button icon-button" onclick="survey.downloadPDF()">
+                            📑 PDF
+                        </button>
+                    </div>
+
+                    <h3>Wyniki szczegółowe</h3>
                     <div class="results-grid">
                         ${sections.map(section => {
                             const score = this.calculateScore(section);
                             return `
                                 <div class="result-card">
-                                    <div style="display: flex; justify-content: space-between">
-                                        <span>${section}</span>
-                                        <span style="color: ${this.getScoreColor(score)}">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span style="font-weight: 500;">${section}</span>
+                                        <span style="color: ${this.getScoreColor(score)}; font-weight: bold;">
                                             ${Math.round(score)}%
                                         </span>
                                     </div>
                                     <div class="progress">
                                         <div class="progress-bar" style="width: ${score}%; background: ${this.getScoreColor(score)}"></div>
                                     </div>
-                                    <div style="font-size: 0.875rem; color: #666">
+                                    <div style="font-size: 0.875rem; color: #666; margin-top: 0.5rem;">
                                         ${this.getScoreLabel(score)}
                                     </div>
                                 </div>
                             `;
                         }).join('')}
                     </div>
-                    <button class="button" onclick="survey.reset()">
-                        Rozpocznij ponownie
-                    </button>
+
+                    <h3>Rekomendacje</h3>
+                    ${allRecommendations.map(rec => `
+                        <div class="recommendation-card ${rec.type}">
+                            ${rec.text}
+                        </div>
+                    `).join('')}
+
+                    <div class="button-group">
+                        <button class="button secondary" onclick="survey.showResults = false; survey.showReview = true; survey.render()">
+                            Przejrzyj odpowiedzi
+                        </button>
+                        <button class="button" onclick="survey.reset()">
+                            Rozpocznij ponownie
+                        </button>
+                    </div>
                 `;
             }
 
             renderSurvey() {
                 const progress = this.calculateProgress();
                 const currentQuestions = this.questions[this.currentSection];
-                const allAnswered = currentQuestions.every(q => this.answers[q.id]);
 
-                return `
-                    ${this.renderSectionNavigator()}
-                    <h2 class="title">${this.currentSection}</h2>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: ${progress}%"></div>
-                    </div>
-                    <div style="text-align: right; font-size: 0.875rem; color: #666">
-                        ${Math.round(progress)}% ukończono
-                    </div>
-                    ${currentQuestions.map(q => `
+                if (this.oneQuestionMode) {
+                    const question = currentQuestions[this.currentQuestionIndex];
+                    const allAnswered = currentQuestions.every(q => this.answers[q.id]);
+                    const sections = Object.keys(this.questions);
+                    const currentSectionIndex = sections.indexOf(this.currentSection);
+                    const totalQuestions = this.getTotalQuestions();
+                    const answeredQuestions = Object.keys(this.answers).length;
+
+                    return `
+                        ${this.renderSectionNavigator()}
+                        <h2 class="title">${this.currentSection}</h2>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: ${progress}%"></div>
+                        </div>
+                        <div style="text-align: right; font-size: 0.875rem; color: #666; margin-bottom: 1rem;">
+                            ${answeredQuestions}/${totalQuestions} pytań • ${Math.round(progress)}% ukończono
+                        </div>
+
                         <div class="question">
-                            <p style="font-weight: 500; font-size: 1.125rem">
-                                ${q.text}
+                            <div class="question-header">
+                                <span class="question-number">
+                                    Pytanie ${this.currentQuestionIndex + 1} z ${currentQuestions.length}
+                                </span>
+                            </div>
+                            <p style="font-weight: 500; font-size: 1.25rem; margin: 1rem 0;">
+                                ${question.text}
                             </p>
                             <div>
-                                ${q.options.map((option, idx) => `
-                                    <button 
-                                        class="button ${this.answers[q.id] === q.scores[idx] ? 'selected' : ''}"
-                                        onclick="survey.handleAnswer('${q.id}', ${q.scores[idx]})">
-                                        ${option}
+                                ${question.options.map((option, idx) => `
+                                    <button
+                                        class="button ${this.answers[question.id] === question.scores[idx] ? 'selected' : ''}"
+                                        onclick="survey.handleAnswer('${question.id}', ${question.scores[idx]}, ${JSON.stringify(question).replace(/"/g, '&quot;')}, ${idx})">
+                                        <span style="opacity: 0.7; margin-right: 8px;">${idx + 1}.</span>${option}
                                     </button>
                                 `).join('')}
                             </div>
                         </div>
-                    `).join('')}
-                    <button 
-                        class="button" 
-                        onclick="survey.nextSection()"
-                        ${!allAnswered ? 'disabled' : ''}>
-                        ${this.currentSection === Object.keys(this.questions).slice(-1)[0] ? 
-                            'Pokaż wyniki' : 'Następna sekcja'}
-                    </button>
-                `;
+
+                        <div class="button-group">
+                            <button
+                                class="button secondary"
+                                onclick="survey.previousQuestion()"
+                                ${this.currentQuestionIndex === 0 && currentSectionIndex === 0 ? 'disabled' : ''}>
+                                ← Poprzednie
+                            </button>
+                            <button
+                                class="button"
+                                onclick="survey.nextQuestion()">
+                                ${currentSectionIndex === sections.length - 1 &&
+                                  this.currentQuestionIndex === currentQuestions.length - 1 && allAnswered ?
+                                    'Przejrzyj odpowiedzi' : 'Następne →'}
+                            </button>
+                        </div>
+
+                        <div class="help-text">
+                            <strong>Nawigacja:</strong> Użyj strzałek lub klawiszy <span class="kbd">1</span>-<span class="kbd">5</span> do szybkiego wyboru
+                        </div>
+                    `;
+                } else {
+                    const allAnswered = currentQuestions.every(q => this.answers[q.id]);
+                    const sections = Object.keys(this.questions);
+                    const currentSectionIndex = sections.indexOf(this.currentSection);
+
+                    return `
+                        ${this.renderSectionNavigator()}
+                        <h2 class="title">${this.currentSection}</h2>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: ${progress}%"></div>
+                        </div>
+                        <div style="text-align: right; font-size: 0.875rem; color: #666">
+                            ${Math.round(progress)}% ukończono
+                        </div>
+                        ${currentQuestions.map((q, idx) => `
+                            <div class="question">
+                                <div class="question-header">
+                                    <span class="question-number">Pytanie ${idx + 1} z ${currentQuestions.length}</span>
+                                </div>
+                                <p style="font-weight: 500; font-size: 1.125rem">
+                                    ${q.text}
+                                </p>
+                                <div>
+                                    ${q.options.map((option, optIdx) => `
+                                        <button
+                                            class="button ${this.answers[q.id] === q.scores[optIdx] ? 'selected' : ''}"
+                                            onclick="survey.handleAnswer('${q.id}', ${q.scores[optIdx]}, ${JSON.stringify(q).replace(/"/g, '&quot;')}, ${optIdx})">
+                                            ${option}
+                                        </button>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `).join('')}
+                        <div class="button-group">
+                            <button
+                                class="button secondary"
+                                onclick="survey.previousSection()"
+                                ${currentSectionIndex === 0 ? 'disabled' : ''}>
+                                ← Poprzednia sekcja
+                            </button>
+                            <button
+                                class="button"
+                                onclick="survey.nextSection()"
+                                ${!allAnswered ? 'disabled' : ''}>
+                                ${currentSectionIndex === sections.length - 1 ?
+                                    'Przejrzyj odpowiedzi' : 'Następna sekcja →'}
+                            </button>
+                        </div>
+                    `;
+                }
             }
 
             render() {
-                this.app.innerHTML = this.showResults ? 
-                    this.renderResults() : 
-                    this.renderSurvey();
+                if (this.showWelcome) {
+                    this.app.innerHTML = this.renderWelcome();
+                } else if (this.showReview) {
+                    this.app.innerHTML = this.renderReview();
+                } else if (this.showResults) {
+                    this.app.innerHTML = this.renderResults();
+                } else {
+                    this.app.innerHTML = this.renderSurvey();
+                }
             }
         }
 
