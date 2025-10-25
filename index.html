@@ -80,6 +80,36 @@
             font-weight: bold;
             text-align: center;
         }
+        .section-navigator {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            padding: 4px 0;
+        }
+        .section-indicator {
+            flex: 1;
+            min-width: 100px;
+            padding: 12px 8px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 0.875rem;
+            background: #e5e7eb;
+            color: #6b7280;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .section-indicator.current {
+            background: var(--primary);
+            color: white;
+            font-weight: bold;
+            border-color: var(--primary-hover);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+        }
+        .section-indicator.completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
     </style>
 </head>
 <body>
@@ -167,6 +197,33 @@
                 return (answeredQuestions / totalQuestions) * 100;
             }
 
+            isSectionCompleted(section) {
+                const sectionData = this.questions[section];
+                return sectionData.every(q => this.answers[q.id] !== undefined);
+            }
+
+            renderSectionNavigator() {
+                const sections = Object.keys(this.questions);
+                return `
+                    <div class="section-navigator">
+                        ${sections.map((section, index) => {
+                            const isCurrent = section === this.currentSection;
+                            const isCompleted = this.isSectionCompleted(section);
+                            const classes = ['section-indicator'];
+                            if (isCurrent) classes.push('current');
+                            else if (isCompleted) classes.push('completed');
+
+                            return `
+                                <div class="${classes.join(' ')}">
+                                    <div style="font-size: 0.75rem; opacity: 0.8;">Część ${index + 1}</div>
+                                    <div>${section}</div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            }
+
             handleAnswer(id, score) {
                 this.answers[id] = score;
                 this.render();
@@ -243,8 +300,9 @@
                 const progress = this.calculateProgress();
                 const currentQuestions = this.questions[this.currentSection];
                 const allAnswered = currentQuestions.every(q => this.answers[q.id]);
-                
+
                 return `
+                    ${this.renderSectionNavigator()}
                     <h2 class="title">${this.currentSection}</h2>
                     <div class="progress">
                         <div class="progress-bar" style="width: ${progress}%"></div>
