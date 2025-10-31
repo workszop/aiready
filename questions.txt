@@ -15,12 +15,12 @@ Jak oceniasz dostępność danych potrzebnych do trenowania modeli AI?|Doskonał
 Czy organizacja przestrzega regulacji prawnych dotyczących ochrony danych w kontekście AI?|Tak|Częściowo|Nie
 
 #Infrastruktura Technologiczna
-Jak oceniasz obecną infrastrukturę technologiczną pod kątem wdrożenia rozwiązań AI?|Doskonała|Bardzo dobra|Dobra|Dostateczna|Niedostateczna
-Czy organizacja posiada dedykowane środowisko deweloperskie do rozwoju rozwiązań AI?|Tak|W trakcie tworzenia|Nie
-Czy infrastruktura spełnia wymagania dotyczące mocy obliczeniowej niezbędnej do trenowania modeli AI?|Tak, w pełni|Częściowo|Nie
-Czy organizacja posiada narzędzia do monitorowania wydajności infrastruktury AI?|Tak|W trakcie wdrażania|Nie
-Jak oceniasz skalowalność obecnej infrastruktury?|Doskonała|Bardzo dobra|Dobra|Dostateczna|Niedostateczna
-Czy infrastruktura technologiczna jest zgodna z wymogami bezpieczeństwa danych w kontekście AI?|Tak|Częściowo|Nie
+Jak oceniasz obecną infrastrukturę technologiczną (lokalną, chmurową lub hybrydową) pod kątem wdrożenia rozwiązań AI?|Doskonała|Bardzo dobra|Dobra|Dostateczna|Niedostateczna
+Czy organizacja posiada dedykowane środowisko (lokalne lub chmurowe) do tworzenia i testowania rozwiązań AI?|Tak|W trakcie tworzenia|Nie
+Czy dostępne zasoby obliczeniowe (lokalne lub w chmurze) spełniają wymagania dotyczące trenowania i uruchamiania modeli AI?|Tak, w pełni|Częściowo|Nie
+Czy organizacja posiada narzędzia do monitorowania i zarządzania wydajnością środowisk AI (zarówno lokalnych, jak i chmurowych)?|Tak|W trakcie wdrażania|Nie
+Jak oceniasz elastyczność i skalowalność obecnej infrastruktury (w tym możliwości chmury lub rozwiązań hybrydowych)?|Doskonała|Bardzo dobra|Dobra|Dostateczna|Niedostateczna
+Czy infrastruktura technologiczna — niezależnie od miejsca przetwarzania danych — spełnia wymogi bezpieczeństwa i zgodności w kontekście AI (np. RODO, AI Act)?|Tak|Częściowo|Nie
 
 #Zespół i Umiejętności
 Czy organizacja posiada dedykowany zespół do projektów AI?|Tak|W trakcie formowania|Nie
