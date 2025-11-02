@@ -559,7 +559,7 @@
                 this.saveToLocalStorage();
 
                 if (this.oneQuestionMode) {
-                    setTimeout(() => this.nextQuestion(), 300);
+                    this.nextQuestion();
                 } else {
                     this.render();
                 }
