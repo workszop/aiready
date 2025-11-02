@@ -15,6 +15,7 @@ Jak oceniasz dostępność danych potrzebnych do trenowania modeli AI?|Doskonał
 Czy organizacja przestrzega regulacji prawnych dotyczących ochrony danych w kontekście AI?|Tak|Częściowo|Nie
 
 #Infrastruktura Technologiczna
+Jak oceniasz obecną infrastrukturę technologiczną (lokalną, chmurową lub hybrydową) pod kątem wdrożenia rozwiązań AI?|Doskonała|Bardzo dobra|Dobra|Dostateczna|Niedostateczna
 Czy dostępne zasoby obliczeniowe i magazyn danych (lokalne lub w chmurze) spełniają wymagania dotyczące trenowania i uruchamiania modeli AI?|Tak, w pełni|Częściowo|Nie
 Czy organizacja posiada wydzielone środowisko (lokalne lub w chmurze) do eksperymentów/testów nowych rozwiązań technologicznych (np. analityka, automatyzacja, AI)?| Tak | W trakcie tworzenia | Nie
 Czy organizacja posiada narzędzia do monitorowania i zarządzania wydajnością środowisk (lokalnych i chmurowych), w tym obserwowalność usług, kosztów i dostępności?| Tak | W trakcie wdrażania | Nie
