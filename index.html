@@ -448,7 +448,8 @@
                 if (sectionAnswers.length === 0) return 0;
 
                 const actualScore = sectionAnswers.reduce((sum, score) => sum + score, 0);
-                return (actualScore / (sectionData.length * 5)) * 100;
+                const maxScore = sectionData.reduce((sum, q) => sum + q.scores[0], 0); // q.scores[0] is the highest score for each question
+                return (actualScore / maxScore) * 100;
             }
 
             calculateProgress() {
