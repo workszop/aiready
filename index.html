@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Readiness Assessment</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash/4.17.21/lodash.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         :root {
             --primary: #3b82f6;
@@ -623,38 +622,6 @@
                 URL.revokeObjectURL(url);
             }
 
-            downloadPDF() {
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
-
-                doc.setFontSize(18);
-                doc.text('Raport Gotowości AI', 20, 20);
-
-                doc.setFontSize(10);
-                doc.text(`Data: ${new Date().toLocaleDateString('pl-PL')}`, 20, 30);
-
-                const sections = Object.keys(this.questions);
-                const overallScore = sections.reduce((sum, sec) => sum + this.calculateScore(sec), 0) / sections.length;
-
-                doc.setFontSize(14);
-                doc.text(`Wynik ogólny: ${Math.round(overallScore)}%`, 20, 40);
-
-                let y = 55;
-                sections.forEach(section => {
-                    const score = this.calculateScore(section);
-                    doc.setFontSize(12);
-                    doc.text(`${section}: ${Math.round(score)}%`, 20, y);
-                    y += 10;
-
-                    if (y > 270) {
-                        doc.addPage();
-                        y = 20;
-                    }
-                });
-
-                doc.save(`ai-readiness-${new Date().toISOString().split('T')[0]}.pdf`);
-            }
-
             renderWelcome() {
                 const totalQuestions = this.getTotalQuestions();
                 const estimatedTime = Math.ceil(totalQuestions * 0.5);
@@ -686,7 +653,7 @@
                             </div>
                             <div class="feature-item">
                                 <div class="feature-icon">⬇</div>
-                                <div>Eksport wyników (PDF, CSV, JSON)</div>
+                                <div>Eksport wyników (CSV, JSON)</div>
                             </div>
                         </div>
 
@@ -769,9 +736,6 @@
                         </button>
                         <button class="button icon-button" onclick="survey.downloadCSV()">
                             📊 CSV
-                        </button>
-                        <button class="button icon-button" onclick="survey.downloadPDF()">
-                            📑 PDF
                         </button>
                     </div>
 
