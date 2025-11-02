@@ -293,7 +293,42 @@
                 this.showReview = false;
                 this.currentQuestionIndex = 0;
                 this.oneQuestionMode = false;
-                this.loadFromLocalStorage();
+                this.hasSavedData = false;
+                this.checkForSavedData();
+            }
+
+            checkForSavedData() {
+                try {
+                    const savedAnswers = localStorage.getItem('aiready_answers');
+                    if (savedAnswers) {
+                        const parsed = JSON.parse(savedAnswers);
+                        this.hasSavedData = Object.keys(parsed).length > 0;
+                        if (this.hasSavedData) {
+                            this.answers = parsed;
+                            const savedDetails = localStorage.getItem('aiready_details');
+                            if (savedDetails) {
+                                this.answerDetails = JSON.parse(savedDetails);
+                            }
+                        }
+                    }
+                } catch (e) {
+                    console.error('Error loading saved data:', e);
+                    this.hasSavedData = false;
+                }
+            }
+
+            loadFromLocalStorage() {
+                const savedAnswers = localStorage.getItem('aiready_answers');
+                const savedDetails = localStorage.getItem('aiready_details');
+                const savedSection = localStorage.getItem('aiready_section');
+                const savedIndex = localStorage.getItem('aiready_index');
+
+                if (savedAnswers) this.answers = JSON.parse(savedAnswers);
+                if (savedDetails) this.answerDetails = JSON.parse(savedDetails);
+                if (savedSection) this.currentSection = savedSection;
+                if (savedIndex) this.currentQuestionIndex = parseInt(savedIndex);
+
+                this.showWelcome = false;
             }
 
             async initialize() {
@@ -402,18 +437,6 @@
                 localStorage.setItem('aiready_details', JSON.stringify(this.answerDetails));
                 localStorage.setItem('aiready_section', this.currentSection);
                 localStorage.setItem('aiready_index', this.currentQuestionIndex.toString());
-            }
-
-            loadFromLocalStorage() {
-                const savedAnswers = localStorage.getItem('aiready_answers');
-                const savedDetails = localStorage.getItem('aiready_details');
-                const savedSection = localStorage.getItem('aiready_section');
-                const savedIndex = localStorage.getItem('aiready_index');
-
-                if (savedAnswers) this.answers = JSON.parse(savedAnswers);
-                if (savedDetails) this.answerDetails = JSON.parse(savedDetails);
-                if (savedSection) this.currentSection = savedSection;
-                if (savedIndex) this.currentQuestionIndex = parseInt(savedIndex);
             }
 
             clearLocalStorage() {
@@ -555,6 +578,19 @@
                 this.render();
             }
 
+            continueSurvey() {
+                this.loadFromLocalStorage();
+                this.render();
+            }
+
+            startFresh() {
+                this.clearLocalStorage();
+                this.answers = {};
+                this.answerDetails = {};
+                this.hasSavedData = false;
+                this.render();
+            }
+
             startSurvey(oneQuestionMode = false) {
                 this.showWelcome = false;
                 this.oneQuestionMode = oneQuestionMode;
@@ -569,6 +605,7 @@
                 this.showReview = false;
                 this.currentSection = Object.keys(this.questions)[0];
                 this.currentQuestionIndex = 0;
+                this.hasSavedData = false;
                 this.clearLocalStorage();
                 this.render();
             }
@@ -626,6 +663,28 @@
             renderWelcome() {
                 const totalQuestions = this.getTotalQuestions();
                 const estimatedTime = Math.ceil(totalQuestions * 0.5);
+
+                if (this.hasSavedData) {
+                    const savedAnswersCount = Object.keys(this.answers).length;
+                    return `
+                        <div class="welcome-screen">
+                            <h1 class="title">Ocena Gotowości AI</h1>
+                            <p class="subtitle">
+                                Znaleziono zapisaną ankietę z ${savedAnswersCount} odpowiedziami.
+                                Czy chcesz kontynuować czy zacząć od nowa?
+                            </p>
+
+                            <div class="button-group">
+                                <button class="button" onclick="survey.continueSurvey()">
+                                    📥 Kontynuuj ankietę
+                                </button>
+                                <button class="button secondary" onclick="survey.startFresh()">
+                                    🔄 Zacznij od nowa
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
 
                 return `
                     <div class="welcome-screen">
