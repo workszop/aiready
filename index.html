@@ -883,19 +883,31 @@
                         </div>
 
                         <div class="button-group">
-                            <button
-                                class="button secondary"
-                                onclick="survey.previousQuestion()"
-                                ${this.currentQuestionIndex === 0 && currentSectionIndex === 0 ? 'disabled' : ''}>
-                                ← Poprzednie
-                            </button>
-                            <button
-                                class="button"
-                                onclick="survey.nextQuestion()">
-                                ${currentSectionIndex === sections.length - 1 &&
-                                  this.currentQuestionIndex === currentQuestions.length - 1 && allAnswered ?
-                                    'Przejrzyj odpowiedzi' : 'Następne →'}
-                            </button>
+                            ${currentSectionIndex === sections.length - 1 &&
+                              this.currentQuestionIndex === currentQuestions.length - 1 && allAnswered ? `
+                                <button
+                                    class="button secondary"
+                                    onclick="survey.showReview = true; survey.showWelcome = false; survey.render()">
+                                    📋 Przejrzyj odpowiedzi
+                                </button>
+                                <button
+                                    class="button"
+                                    onclick="survey.showResults = true; survey.showReview = false; survey.showWelcome = false; survey.render()">
+                                    📊 Wyniki
+                                </button>
+                            ` : `
+                                <button
+                                    class="button secondary"
+                                    onclick="survey.previousQuestion()"
+                                    ${this.currentQuestionIndex === 0 && currentSectionIndex === 0 ? 'disabled' : ''}>
+                                    ← Poprzednie
+                                </button>
+                                <button
+                                    class="button"
+                                    onclick="survey.nextQuestion()">
+                                    Następne →
+                                </button>
+                            `}
                         </div>
 
                         <div class="help-text">
@@ -936,19 +948,31 @@
                             </div>
                         `).join('')}
                         <div class="button-group">
-                            <button
-                                class="button secondary"
-                                onclick="survey.previousSection()"
-                                ${currentSectionIndex === 0 ? 'disabled' : ''}>
-                                ← Poprzednia sekcja
-                            </button>
-                            <button
-                                class="button"
-                                onclick="survey.nextSection()"
-                                ${!allAnswered ? 'disabled' : ''}>
-                                ${currentSectionIndex === sections.length - 1 ?
-                                    'Przejrzyj odpowiedzi' : 'Następna sekcja →'}
-                            </button>
+                            ${currentSectionIndex === sections.length - 1 && allAnswered ? `
+                                <button
+                                    class="button secondary"
+                                    onclick="survey.showReview = true; survey.showWelcome = false; survey.render()">
+                                    📋 Przejrzyj odpowiedzi
+                                </button>
+                                <button
+                                    class="button"
+                                    onclick="survey.showResults = true; survey.showReview = false; survey.showWelcome = false; survey.render()">
+                                    📊 Wyniki
+                                </button>
+                            ` : `
+                                <button
+                                    class="button secondary"
+                                    onclick="survey.previousSection()"
+                                    ${currentSectionIndex === 0 ? 'disabled' : ''}>
+                                    ← Poprzednia sekcja
+                                </button>
+                                <button
+                                    class="button"
+                                    onclick="survey.nextSection()"
+                                    ${!allAnswered ? 'disabled' : ''}>
+                                    Następna sekcja →
+                                </button>
+                            `}
                         </div>
                     `;
                 }
