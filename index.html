@@ -3,56 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Readiness Assessment</title>
+    <title>Ocena Gotowości AI</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash/4.17.21/lodash.min.js"></script>
     <style>
+        /* Modern color scheme matching AI Roadmap */
         :root {
-            --primary: #3b82f6;
-            --primary-hover: #2563eb;
-            --selected: #f97316;
-            --success: #22c55e;
-            --warning: #eab308;
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #4facfe;
+            --selected-color: #f5576c;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --bg-light: #f7fafc;
+            --bg-white: #ffffff;
+            --success: #43e97b;
+            --warning: #f5576c;
             --danger: #ef4444;
         }
+
         * {
             box-sizing: border-box;
         }
+
         body {
-            font-family: system-ui, -apple-system, sans-serif;
+            background: linear-gradient(180deg, #f7fafc 0%, #edf2f7 100%);
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--text-dark);
             margin: 0;
-            padding: 20px;
-            background: #f5f5f5;
+            padding: 0;
+            line-height: 1.7;
+            min-height: 100vh;
         }
+
         .card {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: var(--bg-white);
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
             max-width: 800px;
-            margin: 20px auto;
-            padding: 24px;
+            margin: 2rem auto;
+            padding: 2.5rem;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--primary-gradient);
         }
         .title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-        .subtitle {
-            font-size: 1rem;
-            color: #666;
+            font-size: 1.8rem;
+            font-weight: 700;
             margin-bottom: 1.5rem;
-            line-height: 1.6;
+            color: var(--text-dark);
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+            letter-spacing: 0.3px;
         }
         .progress {
             height: 12px;
-            background: #e5e7eb;
+            background: rgba(102, 126, 234, 0.1);
             border-radius: 6px;
             margin: 1rem 0;
+            overflow: hidden;
         }
+
         .progress-bar {
             height: 100%;
-            background: var(--primary);
+            background: var(--primary-gradient);
             border-radius: 6px;
             transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
         }
         .question {
             margin: 2rem 0;
@@ -69,38 +107,67 @@
             font-weight: 500;
         }
         .button {
-            background: var(--primary);
+            background: var(--primary-gradient);
             color: white;
             border: none;
             padding: 12px 20px;
-            border-radius: 6px;
+            border-radius: 0.75rem;
             cursor: pointer;
             width: 100%;
             margin: 4px 0;
             text-align: left;
             font-size: 1rem;
-            transition: all 0.2s ease;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
         }
+
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .button:hover:not(:disabled)::before {
+            opacity: 1;
+        }
+
         .button:hover:not(:disabled) {
-            background: var(--primary-hover);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
+
         .button:focus {
-            outline: 2px solid var(--primary);
+            outline: 2px solid var(--primary-color);
             outline-offset: 2px;
         }
+
         .button.selected {
-            background: var(--selected);
+            background: var(--secondary-gradient);
+            box-shadow: 0 4px 12px rgba(245, 87, 108, 0.4);
         }
+
         .button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            box-shadow: none;
         }
+
         .button.secondary {
-            background: #6b7280;
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            box-shadow: 0 2px 8px rgba(107, 114, 128, 0.3);
         }
+
         .button.secondary:hover:not(:disabled) {
-            background: #4b5563;
+            box-shadow: 0 4px 12px rgba(107, 114, 128, 0.4);
         }
         .button-group {
             display: flex;
@@ -137,29 +204,35 @@
             flex: 1;
             min-width: 100px;
             padding: 12px 8px;
-            border-radius: 6px;
+            border-radius: 0.75rem;
             text-align: center;
             font-size: 0.875rem;
-            background: #e5e7eb;
-            color: #6b7280;
+            background: rgba(102, 126, 234, 0.1);
+            color: var(--text-light);
             border: 2px solid transparent;
             transition: all 0.3s ease;
             cursor: pointer;
+            font-weight: 500;
         }
+
         .section-indicator:hover {
-            background: #d1d5db;
+            background: rgba(102, 126, 234, 0.15);
             transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
         }
+
         .section-indicator.current {
-            background: var(--primary);
+            background: var(--primary-gradient);
             color: white;
-            font-weight: bold;
-            border-color: var(--primary-hover);
-            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+            font-weight: 700;
+            border-color: var(--secondary-color);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
+
         .section-indicator.completed {
-            background: #d1fae5;
+            background: linear-gradient(135deg, rgba(67, 233, 123, 0.2) 0%, rgba(56, 249, 215, 0.2) 100%);
             color: #065f46;
+            border: 2px solid rgba(67, 233, 123, 0.3);
         }
         .welcome-screen {
             text-align: center;
@@ -176,48 +249,63 @@
             gap: 12px;
         }
         .feature-icon {
-            width: 24px;
-            height: 24px;
-            background: var(--primary);
+            width: 32px;
+            height: 32px;
+            background: var(--primary-gradient);
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 16px;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+            flex-shrink: 0;
         }
         .review-section {
             margin: 2rem 0;
-            padding: 1rem;
-            background: #f9fafb;
-            border-radius: 8px;
+            padding: 1.5rem;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 0.75rem;
+            border: 1px solid rgba(102, 126, 234, 0.1);
         }
+
         .review-question {
             padding: 1rem 0;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
         }
+
         .review-question:last-child {
             border-bottom: none;
         }
+
         .review-answer {
-            color: var(--selected);
-            font-weight: 500;
+            color: var(--selected-color);
+            font-weight: 600;
             margin-top: 0.5rem;
         }
+
         .recommendation-card {
             margin: 1rem 0;
-            padding: 1rem;
-            border-left: 4px solid var(--primary);
-            background: #f0f9ff;
-            border-radius: 4px;
+            padding: 1.25rem;
+            border-left: 4px solid var(--primary-color);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(79, 172, 254, 0.05) 100%);
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
         }
+
+        .recommendation-card:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+
         .recommendation-card.warning {
             border-left-color: var(--warning);
-            background: #fefce8;
+            background: linear-gradient(135deg, rgba(245, 87, 108, 0.05) 0%, rgba(240, 147, 251, 0.05) 100%);
         }
+
         .recommendation-card.danger {
             border-left-color: var(--danger);
-            background: #fef2f2;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(245, 87, 108, 0.05) 100%);
         }
         .download-buttons {
             display: grid;
@@ -269,11 +357,28 @@
 
         .help-text {
             font-size: 0.875rem;
-            color: #6b7280;
+            color: var(--text-light);
             margin-top: 1rem;
             padding: 12px;
-            background: #f9fafb;
-            border-radius: 6px;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 0.75rem;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        /* Enhanced animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            animation: fadeInUp 0.6s ease forwards;
         }
     </style>
 </head>
@@ -447,10 +552,10 @@
             }
 
             getScoreColor(score) {
-                if (score >= 80) return '#22c55e';
-                if (score >= 60) return '#3b82f6';
-                if (score >= 40) return '#eab308';
-                if (score >= 20) return '#f97316';
+                if (score >= 80) return '#43e97b';
+                if (score >= 60) return '#4facfe';
+                if (score >= 40) return '#667eea';
+                if (score >= 20) return '#f5576c';
                 return '#ef4444';
             }
 
@@ -994,5 +1099,8 @@
         const survey = new Survey();
         survey.initialize();
     </script>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
