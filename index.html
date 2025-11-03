@@ -7,52 +7,111 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash/4.17.21/lodash.min.js"></script>
     <style>
         :root {
-            --primary: #3b82f6;
-            --primary-hover: #2563eb;
-            --selected: #f97316;
-            --success: #22c55e;
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --info-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #4facfe;
+            --primary: #667eea;
+            --primary-hover: #764ba2;
+            --selected: #f5576c;
+            --success: #43e97b;
             --warning: #eab308;
             --danger: #ef4444;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --bg-light: #f7fafc;
+            --bg-white: #ffffff;
         }
         * {
             box-sizing: border-box;
         }
         body {
-            font-family: system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
             margin: 0;
-            padding: 20px;
-            background: #f5f5f5;
+            padding: 0;
+            background: linear-gradient(180deg, #f7fafc 0%, #edf2f7 100%);
+            color: var(--text-dark);
+            scroll-behavior: smooth;
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* Scroll Progress Indicator */
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(102, 126, 234, 0.2);
+            z-index: 9999;
+        }
+
+        .scroll-progress {
+            height: 100%;
+            background: var(--primary-gradient);
+            width: 0%;
+            transition: width 0.1s ease;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
         }
         .card {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 24px;
+            background: var(--bg-white);
+            border-radius: 1rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--primary-gradient);
+        }
+
+        .card:hover {
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.15);
+            transform: translateY(-2px);
         }
         .title {
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-size: 1.8rem;
+            font-weight: 700;
             margin-bottom: 1rem;
+            color: var(--text-dark);
+            letter-spacing: -0.5px;
         }
         .subtitle {
-            font-size: 1rem;
-            color: #666;
+            font-size: 1.1rem;
+            color: var(--text-light);
             margin-bottom: 1.5rem;
-            line-height: 1.6;
+            line-height: 1.7;
+            letter-spacing: 0.3px;
         }
         .progress {
-            height: 12px;
-            background: #e5e7eb;
-            border-radius: 6px;
+            height: 14px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 1rem;
             margin: 1rem 0;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
         }
         .progress-bar {
             height: 100%;
-            background: var(--primary);
-            border-radius: 6px;
-            transition: width 0.3s ease;
+            background: var(--primary-gradient);
+            border-radius: 1rem;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
         }
         .question {
             margin: 2rem 0;
@@ -65,42 +124,66 @@
         }
         .question-number {
             font-size: 0.875rem;
-            color: #666;
+            color: var(--text-light);
             font-weight: 500;
         }
         .button {
-            background: var(--primary);
+            background: var(--primary-gradient);
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
+            padding: 14px 24px;
+            border-radius: 0.75rem;
             cursor: pointer;
             width: 100%;
-            margin: 4px 0;
+            margin: 6px 0;
             text-align: left;
             font-size: 1rem;
-            transition: all 0.2s ease;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .button:hover:not(:disabled)::before {
+            opacity: 1;
         }
         .button:hover:not(:disabled) {
-            background: var(--primary-hover);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.35);
+        }
+        .button:active:not(:disabled) {
+            transform: translateY(0);
         }
         .button:focus {
-            outline: 2px solid var(--primary);
+            outline: 3px solid rgba(102, 126, 234, 0.4);
             outline-offset: 2px;
         }
         .button.selected {
-            background: var(--selected);
+            background: var(--secondary-gradient);
+            box-shadow: 0 4px 12px rgba(245, 87, 108, 0.35);
         }
         .button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            box-shadow: none;
         }
         .button.secondary {
-            background: #6b7280;
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            box-shadow: 0 4px 12px rgba(107, 114, 128, 0.25);
         }
         .button.secondary:hover:not(:disabled) {
-            background: #4b5563;
+            box-shadow: 0 6px 20px rgba(107, 114, 128, 0.35);
         }
         .button-group {
             display: flex;
@@ -117,9 +200,16 @@
             margin: 2rem 0;
         }
         .result-card {
-            padding: 1rem;
-            border: 1px solid #e5e7eb;
-            border-radius: 6px;
+            padding: 1.5rem;
+            border: 1px solid rgba(102, 126, 234, 0.15);
+            border-radius: 1rem;
+            background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(247,250,252,0.9) 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .result-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.15);
+            border-color: rgba(102, 126, 234, 0.3);
         }
         .score {
             font-size: 2.5rem;
@@ -136,30 +226,33 @@
         .section-indicator {
             flex: 1;
             min-width: 100px;
-            padding: 12px 8px;
-            border-radius: 6px;
+            padding: 14px 10px;
+            border-radius: 0.75rem;
             text-align: center;
             font-size: 0.875rem;
-            background: #e5e7eb;
-            color: #6b7280;
+            background: rgba(229, 231, 235, 0.7);
+            color: var(--text-light);
             border: 2px solid transparent;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
+            font-weight: 500;
         }
         .section-indicator:hover {
-            background: #d1d5db;
+            background: rgba(102, 126, 234, 0.1);
             transform: translateY(-2px);
+            border-color: rgba(102, 126, 234, 0.3);
         }
         .section-indicator.current {
-            background: var(--primary);
+            background: var(--primary-gradient);
             color: white;
-            font-weight: bold;
+            font-weight: 600;
             border-color: var(--primary-hover);
-            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
         .section-indicator.completed {
-            background: #d1fae5;
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
             color: #065f46;
+            border-color: #34d399;
         }
         .welcome-screen {
             text-align: center;
@@ -176,48 +269,57 @@
             gap: 12px;
         }
         .feature-icon {
-            width: 24px;
-            height: 24px;
-            background: var(--primary);
+            width: 32px;
+            height: 32px;
+            background: var(--primary-gradient);
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+            flex-shrink: 0;
         }
         .review-section {
             margin: 2rem 0;
-            padding: 1rem;
-            background: #f9fafb;
-            border-radius: 8px;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.03) 0%, rgba(79, 172, 254, 0.03) 100%);
+            border-radius: 1rem;
+            border: 1px solid rgba(102, 126, 234, 0.1);
         }
         .review-question {
             padding: 1rem 0;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
         }
         .review-question:last-child {
             border-bottom: none;
         }
         .review-answer {
             color: var(--selected);
-            font-weight: 500;
+            font-weight: 600;
             margin-top: 0.5rem;
         }
         .recommendation-card {
             margin: 1rem 0;
-            padding: 1rem;
-            border-left: 4px solid var(--primary);
-            background: #f0f9ff;
-            border-radius: 4px;
+            padding: 1.25rem;
+            border-left: 5px solid var(--primary-color);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(79, 172, 254, 0.08) 100%);
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+        }
+        .recommendation-card:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
         }
         .recommendation-card.warning {
             border-left-color: var(--warning);
-            background: #fefce8;
+            background: linear-gradient(135deg, rgba(234, 179, 8, 0.08) 0%, rgba(234, 179, 8, 0.05) 100%);
         }
         .recommendation-card.danger {
             border-left-color: var(--danger);
-            background: #fef2f2;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(239, 68, 68, 0.05) 100%);
         }
         .download-buttons {
             display: grid;
@@ -269,15 +371,52 @@
 
         .help-text {
             font-size: 0.875rem;
-            color: #6b7280;
-            margin-top: 1rem;
-            padding: 12px;
-            background: #f9fafb;
-            border-radius: 6px;
+            color: var(--text-light);
+            margin-top: 1.5rem;
+            padding: 1rem 1.25rem;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(79, 172, 254, 0.05) 100%);
+            border-radius: 0.75rem;
+            border-left: 3px solid var(--accent-color);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .card {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .question {
+            animation: slideIn 0.4s ease forwards;
         }
     </style>
 </head>
 <body>
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-indicator">
+        <div class="scroll-progress" id="scrollProgress"></div>
+    </div>
+
     <div id="app" class="card"></div>
     
     <script>
@@ -668,7 +807,13 @@
                     const savedAnswersCount = Object.keys(this.answers).length;
                     return `
                         <div class="welcome-screen">
-                            <h1 class="title">Ocena Gotowości AI</h1>
+                            <h1 class="title">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-robot" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 10px; color: var(--primary-color);">
+                                    <path d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5M3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.6 26.6 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.93.93 0 0 1-.765.935c-.845.147-2.34.346-4.235.346s-3.39-.2-4.235-.346A.93.93 0 0 1 3 9.219zm4.542-.827a.25.25 0 0 0-.217.068l-.92.9a24.8 24.8 0 0 1-1.871-.183.25.25 0 0 0-.068.495c.55.076 1.232.149 2.02.193a.25.25 0 0 0 .189-.071l.754-.736.847 1.71a.25.25 0 0 0 .404.062l.932-.97a25 25 0 0 0 1.922-.188.25.25 0 0 0-.068-.495c-.538.074-1.207.145-1.98.189a.25.25 0 0 0-.166.076l-.754.785-.842-1.7a.25.25 0 0 0-.182-.135"/>
+                                    <path d="M8.5 1.866a1 1 0 1 0-1 0V3h-2A4.5 4.5 0 0 0 1 7.5V8a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1v-.5A4.5 4.5 0 0 0 10.5 3h-2zM14 7.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5A3.5 3.5 0 0 1 5.5 4h5A3.5 3.5 0 0 1 14 7.5"/>
+                                </svg>
+                                Ocena Gotowości AI
+                            </h1>
                             <p class="subtitle">
                                 Znaleziono zapisaną ankietę z ${savedAnswersCount} odpowiedziami.
                                 Czy chcesz kontynuować czy zacząć od nowa?
@@ -688,7 +833,13 @@
 
                 return `
                     <div class="welcome-screen">
-                        <h1 class="title">Ocena Gotowości AI</h1>
+                        <h1 class="title">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-robot" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 10px; color: var(--primary-color);">
+                                <path d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5M3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.6 26.6 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.93.93 0 0 1-.765.935c-.845.147-2.34.346-4.235.346s-3.39-.2-4.235-.346A.93.93 0 0 1 3 9.219zm4.542-.827a.25.25 0 0 0-.217.068l-.92.9a24.8 24.8 0 0 1-1.871-.183.25.25 0 0 0-.068.495c.55.076 1.232.149 2.02.193a.25.25 0 0 0 .189-.071l.754-.736.847 1.71a.25.25 0 0 0 .404.062l.932-.97a25 25 0 0 0 1.922-.188.25.25 0 0 0-.068-.495c-.538.074-1.207.145-1.98.189a.25.25 0 0 0-.166.076l-.754.785-.842-1.7a.25.25 0 0 0-.182-.135"/>
+                                <path d="M8.5 1.866a1 1 0 1 0-1 0V3h-2A4.5 4.5 0 0 0 1 7.5V8a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1v-.5A4.5 4.5 0 0 0 10.5 3h-2zM14 7.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5A3.5 3.5 0 0 1 5.5 4h5A3.5 3.5 0 0 1 14 7.5"/>
+                            </svg>
+                            Ocena Gotowości AI
+                        </h1>
                         <p class="subtitle">
                             Witamy w narzędziu do oceny gotowości Twojej organizacji do wdrożenia sztucznej inteligencji.
                             To badanie pomoże Ci zidentyfikować mocne strony oraz obszary wymagające rozwoju.
@@ -738,7 +889,13 @@
                 const sections = Object.keys(this.questions);
 
                 return `
-                    <h2 class="title">Przegląd odpowiedzi</h2>
+                    <h2 class="title">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-clipboard-check" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 10px; color: var(--primary-color);">
+                            <path d="M4 1.5A1.5 1.5 0 0 1 5.5 0h5A1.5 1.5 0 0 1 12 1.5V2h1.5A1.5 1.5 0 0 1 15 3.5v11A1.5 1.5 0 0 1 13.5 16h-11A1.5 1.5 0 0 1 1 14.5v-11A1.5 1.5 0 0 1 2.5 2H4zm1 0a.5.5 0 0 0-.5.5V2h7v-.5a.5.5 0 0 0-.5-.5z"/>
+                            <path d="M10.97 7.03a.75.75 0 0 1 0 1.06l-3 3a.75.75 0 0 1-1.06 0l-1.5-1.5a.75.75 0 1 1 1.06-1.06L7.5 9.94l2.44-2.91a.75.75 0 0 1 1.03 0"/>
+                        </svg>
+                        Przegląd odpowiedzi
+                    </h2>
                     <p class="subtitle">Sprawdź swoje odpowiedzi przed wyświetleniem wyników.</p>
 
                     ${sections.map(section => {
@@ -782,7 +939,12 @@
                 });
 
                 return `
-                    <h1 class="title">Wyniki Oceny Gotowości AI</h1>
+                    <h1 class="title">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 10px; color: var(--primary-color);">
+                            <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07"/>
+                        </svg>
+                        Wyniki Oceny Gotowości AI
+                    </h1>
                     <div class="score" style="color: ${this.getScoreColor(overallScore)}">
                         ${Math.round(overallScore)}%
                     </div>
@@ -814,7 +976,7 @@
                                     <div class="progress">
                                         <div class="progress-bar" style="width: ${score}%; background: ${this.getScoreColor(score)}"></div>
                                     </div>
-                                    <div style="font-size: 0.875rem; color: #666; margin-top: 0.5rem;">
+                                    <div style="font-size: 0.875rem; color: var(--text-light); margin-top: 0.5rem;">
                                         ${this.getScoreLabel(score)}
                                     </div>
                                 </div>
@@ -858,7 +1020,7 @@
                         <div class="progress">
                             <div class="progress-bar" style="width: ${progress}%"></div>
                         </div>
-                        <div style="text-align: right; font-size: 0.875rem; color: #666; margin-bottom: 1rem;">
+                        <div style="text-align: right; font-size: 0.875rem; color: var(--text-light); margin-bottom: 1rem;">
                             ${answeredQuestions}/${totalQuestions} pytań • ${Math.round(progress)}% ukończono
                         </div>
 
@@ -925,7 +1087,7 @@
                         <div class="progress">
                             <div class="progress-bar" style="width: ${progress}%"></div>
                         </div>
-                        <div style="text-align: right; font-size: 0.875rem; color: #666">
+                        <div style="text-align: right; font-size: 0.875rem; color: var(--text-light)">
                             ${Math.round(progress)}% ukończono
                         </div>
                         ${currentQuestions.map((q, idx) => `
@@ -993,6 +1155,17 @@
 
         const survey = new Survey();
         survey.initialize();
+
+        // Scroll progress indicator
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            const progressBar = document.getElementById('scrollProgress');
+            if (progressBar) {
+                progressBar.style.width = scrolled + '%';
+            }
+        });
     </script>
 </body>
 </html>
