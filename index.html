@@ -511,6 +511,57 @@
             background: rgba(0,163,122,0.08);
         }
 
+        /* ── Radar chart ─────────────────────────────────────────────────────── */
+        .radar-wrap {
+            display: flex;
+            justify-content: center;
+            margin: var(--space-6) 0 var(--space-7);
+        }
+
+        .radar-wrap svg {
+            overflow: visible;
+        }
+
+        /* ── Action cards ────────────────────────────────────────────────────── */
+        .action-card {
+            display: flex;
+            gap: var(--space-5);
+            align-items: flex-start;
+            padding: var(--space-5);
+            background: var(--bg-2);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-1);
+            border-left: 3px solid var(--quantica-pink);
+            margin: var(--space-3) 0;
+        }
+
+        .action-num {
+            font-family: var(--font-mono);
+            font-size: var(--fs-caption);
+            font-weight: 600;
+            color: var(--fg-brand);
+            min-width: 24px;
+            padding-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .action-body { flex: 1; }
+
+        .action-eyebrow {
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: var(--tracking-caps);
+            color: var(--fg-brand);
+            margin-bottom: var(--space-1);
+        }
+
+        .action-text {
+            font-size: var(--fs-body-lg);
+            line-height: var(--lh-body);
+            color: var(--fg-1);
+        }
+
         /* ── Download buttons ────────────────────────────────────────────────── */
         .download-buttons {
             display: flex;
