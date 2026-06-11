@@ -611,9 +611,77 @@
 
         .question { animation: fadeIn var(--dur-2) var(--ease-standard); }
 
+        /* ── Top bar ─────────────────────────────────────────────────────────── */
+        .topbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 200;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            gap: var(--space-5);
+            padding: 0 var(--space-6);
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-1);
+        }
+
+        .topbar__logo img {
+            display: block;
+            height: 24px;
+            width: auto;
+        }
+
+        .topbar__nav {
+            flex: 1;
+            display: flex;
+            gap: var(--space-1);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .topbar__nav::-webkit-scrollbar { display: none; }
+
+        .topbar__step {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: 4px 10px;
+            border-radius: var(--radius-pill);
+            font-size: 11px;
+            font-weight: var(--fw-medium);
+            white-space: nowrap;
+            cursor: pointer;
+            border: 1px solid transparent;
+            color: var(--fg-3);
+            background: transparent;
+            transition: all var(--dur-1) var(--ease-standard);
+        }
+
+        .topbar__step:hover { color: var(--fg-1); background: var(--bg-2); }
+
+        .topbar__step.current {
+            background: var(--magenta-tint);
+            color: var(--fg-brand);
+            border-color: var(--border-brand);
+        }
+
+        .topbar__step.done {
+            color: var(--violet-primary);
+        }
+
+        .topbar__step-num {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            opacity: 0.7;
+        }
+
+        /* Push body down so content isn't hidden behind topbar */
+        body { padding-top: calc(var(--space-8) + 56px); }
+
         /* ── Responsive ──────────────────────────────────────────────────────── */
         @media (max-width: 600px) {
-            body { padding: var(--space-4) 0; }
+            body { padding: calc(56px + var(--space-4)) 0 var(--space-4); }
             .card { border-radius: 0; border-left: none; border-right: none; }
             #app { padding: var(--space-6) var(--space-5); }
             .title { font-size: 2rem; }
@@ -622,10 +690,20 @@
             .section-indicator { min-width: 60px; font-size: 10px; padding: var(--space-2); }
             .results-grid { grid-template-columns: 1fr; }
             .score { font-size: 56px; }
+            .topbar { padding: 0 var(--space-4); gap: var(--space-3); }
+            .topbar__step-label { display: none; }
         }
     </style>
 </head>
 <body>
+    <!-- Top bar -->
+    <header class="topbar" id="topbar">
+        <a class="topbar__logo" href="#" aria-label="Quantica Lab">
+            <img src="https://workszop.github.io/md2web/assets/quantica-logo-color.png" alt="Quantica Lab" />
+        </a>
+        <nav class="topbar__nav" id="topbar-nav" aria-label="Sekcje ankiety"></nav>
+    </header>
+
     <!-- Scroll Progress Indicator -->
     <div class="scroll-indicator">
         <div class="scroll-progress" id="scrollProgress"></div>
@@ -1453,6 +1531,31 @@
                 } else {
                     this.app.innerHTML = this.renderSurvey();
                 }
+                this.renderTopbarNav();
+            }
+
+            renderTopbarNav() {
+                const nav = document.getElementById('topbar-nav');
+                if (!nav) return;
+
+                // Only show section steps during survey (not welcome/results/review)
+                if (this.showWelcome || this.showResults || this.showReview || this.showStatusView) {
+                    nav.innerHTML = '';
+                    return;
+                }
+
+                const sections = Object.keys(this.questions);
+                nav.innerHTML = sections.map((section, i) => {
+                    const isCurrent = section === this.currentSection;
+                    const isCompleted = this.isSectionCompleted(section);
+                    const cls = isCurrent ? 'current' : isCompleted ? 'done' : '';
+                    return `
+                        <button class="topbar__step ${cls}" onclick="survey.goToSection('${section}')" title="${section}">
+                            <span class="topbar__step-num">${i + 1}</span>
+                            <span class="topbar__step-label">${section}</span>
+                        </button>
+                    `;
+                }).join('');
             }
         }
 
