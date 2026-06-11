@@ -1175,6 +1175,75 @@
                     }
                 };
 
+                const getLevel = (score) => {
+                    if (score <= 20) return 1;
+                    if (score <= 40) return 2;
+                    if (score <= 60) return 3;
+                    if (score <= 80) return 4;
+                    return 5;
+                };
+
+                const renderRadar = (categoryScores) => {
+                    const cx = 160, cy = 160, maxR = 110;
+                    const sectionNames = Object.keys(categoryScores);
+                    const n = sectionNames.length;
+                    const angles = sectionNames.map((_, i) =>
+                        (i * 2 * Math.PI / n) - Math.PI / 2
+                    );
+
+                    const SHORT_LABELS = {
+                        'Strategia i przywództwo': 'Strategia',
+                        'Dane i prywatność': 'Dane',
+                        'Usługi miejskie i przypadki użycia': 'Usługi',
+                        'Zespół i partnerstwa': 'Zespół',
+                        'Etyka i zaufanie mieszkańców': 'Etyka'
+                    };
+
+                    const gridLines = [0.33, 0.66, 1.0].map(factor => {
+                        const r = factor * maxR;
+                        const pts = angles
+                            .map(a => `${(cx + r * Math.cos(a)).toFixed(1)},${(cy + r * Math.sin(a)).toFixed(1)}`)
+                            .join(' ');
+                        return `<polygon points="${pts}" fill="none" stroke="#E6E8EC" stroke-width="1"/>`;
+                    }).join('');
+
+                    const axisLines = angles.map(a =>
+                        `<line x1="${cx}" y1="${cy}" x2="${(cx + maxR * Math.cos(a)).toFixed(1)}" y2="${(cy + maxR * Math.sin(a)).toFixed(1)}" stroke="#E6E8EC" stroke-width="1"/>`
+                    ).join('');
+
+                    const scorePoints = sectionNames.map((s, i) => {
+                        const r = (categoryScores[s] / 100) * maxR;
+                        return `${(cx + r * Math.cos(angles[i])).toFixed(1)},${(cy + r * Math.sin(angles[i])).toFixed(1)}`;
+                    }).join(' ');
+
+                    const labelR = maxR + 20;
+                    const axisLabels = sectionNames.map((s, i) => {
+                        const x = cx + labelR * Math.cos(angles[i]);
+                        const y = cy + labelR * Math.sin(angles[i]);
+                        const cosA = Math.cos(angles[i]);
+                        const anchor = cosA > 0.1 ? 'start' : cosA < -0.1 ? 'end' : 'middle';
+                        const label = SHORT_LABELS[s] || s.split(' ')[0];
+                        return `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="${anchor}" dominant-baseline="middle" font-family="Satoshi,Inter,sans-serif" font-size="11" fill="#6B6B76">${label}</text>`;
+                    }).join('');
+
+                    const overall = Math.round(
+                        Object.values(categoryScores).reduce((a, b) => a + b, 0) / n
+                    );
+
+                    return `
+                        <div class="radar-wrap">
+                            <svg viewBox="0 0 320 320" width="320" height="320" aria-hidden="true">
+                                ${gridLines}
+                                ${axisLines}
+                                <polygon points="${scorePoints}" fill="rgba(196,30,84,0.2)" stroke="#C41E54" stroke-width="2" stroke-linejoin="round"/>
+                                ${axisLabels}
+                                <text x="160" y="152" text-anchor="middle" font-family="Satoshi,Inter,sans-serif" font-size="28" font-weight="700" fill="#111111">${overall}%</text>
+                                <text x="160" y="172" text-anchor="middle" font-family="Geist Mono,monospace" font-size="11" fill="#6B6B76">wynik ogólny</text>
+                            </svg>
+                        </div>
+                    `;
+                };
+
                 const sections = Object.keys(this.questions);
                 const overallScore = sections
                     .reduce((sum, sec) => sum + this.calculateScore(sec), 0) / sections.length;
