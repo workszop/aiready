@@ -1,0 +1,30 @@
+#Strategy & Leadership
+Does the city have a formal AI or smart city strategy?|Yes|In development|No
+How do you assess city leadership's (mayor, council) understanding of AI opportunities and risks?|Excellent|Very good|Good|Satisfactory|Unsatisfactory
+Are there risk management processes related to AI implementation?|Yes|Being implemented|No
+Is AI adoption included in the city's multi-year development plan?|Yes|Being planned|No
+Does the city participate in national or EU smart city initiatives?|Yes|In exploratory phase|No
+
+#Data & Privacy
+Does the city have a policy for using citizen data in AI systems?|Yes|In development|No
+How do you assess the quality and availability of city operational data (traffic, utilities, permits)?|Excellent|Very good|Good|Satisfactory|Unsatisfactory
+Does the city comply with GDPR and EU AI Act requirements for public sector AI use?|Yes|Partially|No
+Is there cross-departmental data sharing infrastructure between city services?|Yes|Partially|No
+
+#City Services & Use Cases
+Have specific city services been identified for AI improvement (traffic, waste, safety, permits, citizen services)?|Yes, comprehensively|Partially|No
+Is there a pilot or proof-of-concept AI project currently running in the city?|Yes, multiple|Yes, one|No
+How do you assess residents' digital readiness to interact with AI-powered city services?|Excellent|Very good|Good|Satisfactory|Unsatisfactory
+How do you assess integration of AI solutions with existing city IT systems?|Excellent|Very good|Good|Satisfactory|Unsatisfactory
+
+#Team & Partnerships
+Does the city have staff or a team dedicated to AI and digital innovation projects?|Yes|Being formed|No
+How do you assess the AI competence level of city IT and innovation teams?|Excellent|Very good|Good|Satisfactory|Unsatisfactory
+Does the city have partnerships with universities, tech companies, or other cities on AI?|Yes, multiple|Yes, one|No
+Is there a process for evaluating and selecting AI vendors?|Yes|In development|No
+
+#Ethics & Citizen Trust
+Do residents have access to information about how their data is used in city AI systems?|Yes|Partially|No
+Are there safeguards against algorithmic bias in AI-assisted city decisions (permits, social services, public safety)?|Yes|Being implemented|No
+Does the city have a public-facing AI transparency or ethics policy?|Yes|In development|No
+Has the city assessed which AI applications fall under high-risk categories in the EU AI Act?|Yes|In progress|No
