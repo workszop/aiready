@@ -1129,6 +1129,52 @@
             }
 
             renderResults() {
+                const SECTION_KEY = {
+                    'Strategia i przywództwo': 'strategia',
+                    'Dane i prywatność': 'dane',
+                    'Usługi miejskie i przypadki użycia': 'uslugi',
+                    'Zespół i partnerstwa': 'zespol',
+                    'Etyka i zaufanie mieszkańców': 'etyka'
+                };
+
+                const ACTIONS = {
+                    strategia: {
+                        1: "Powołaj zespół roboczy ds. AI i wyznacz lidera cyfryzacji odpowiedzialnego za koordynację działań.",
+                        2: "Opracuj formalny dokument strategii AI i przedstaw go władzom miasta do akceptacji.",
+                        3: "Włącz strategię AI do wieloletniego planu finansowego i powiąż z mierzalnymi wskaźnikami KPI.",
+                        4: "Dołącz do krajowej lub unijnej sieci smart city i aktywnie dziel się doświadczeniami.",
+                        5: "Opublikuj otwarte sprawozdanie z realizacji strategii AI i buduj pozycję miasta jako punktu referencyjnego."
+                    },
+                    dane: {
+                        1: "Przeprowadź audyt dostępnych danych miejskich i zidentyfikuj kluczowe luki w jakości i dostępności.",
+                        2: "Opracuj politykę zarządzania danymi i wdróż procedury ochrony danych zgodne z RODO.",
+                        3: "Stwórz centralny katalog danych miejskich i uruchom platformę wymiany danych między wydziałami.",
+                        4: "Wdróż mechanizmy zarządzania jakością danych i przygotuj zbiory do zasilania systemów AI.",
+                        5: "Otwórz wybrane zbiory jako open data i nawiąż współpracę z uczelniami w zakresie ich analizy."
+                    },
+                    uslugi: {
+                        1: "Zidentyfikuj 2–3 usługi o największym potencjale automatyzacji i opracuj wstępne analizy możliwości.",
+                        2: "Uruchom pierwszy projekt pilotażowy AI z mierzalnymi celami i dedykowanym budżetem.",
+                        3: "Opracuj mapę drogową wdrożeń AI dla kolejnych usług i określ priorytety na podstawie analizy wartości.",
+                        4: "Wdróż monitoring efektywności systemów AI i prowadź regularne przeglądy wyników z interesariuszami.",
+                        5: "Standaryzuj procesy wdrożeń i udostępnij wypracowane rozwiązania innym miastom."
+                    },
+                    zespol: {
+                        1: "Wyznacz osobę odpowiedzialną za projekty cyfrowe i zapewnij jej podstawowe szkolenie z zakresu AI.",
+                        2: "Opracuj plan rozwoju kompetencji AI dla pracowników i nawiąż kontakt z lokalną uczelnią lub hubem technologicznym.",
+                        3: "Sformalizuj partnerstwa z dostawcami AI i określ kryteria oceny technologii w zamówieniach publicznych.",
+                        4: "Zbuduj interdyscyplinarny zespół ds. innowacji łączący IT, prawo i kompetencje merytoryczne wydziałów.",
+                        5: "Ustanów miejskie centrum kompetencji AI i uczestnictw aktywnie w europejskich sieciach wymiany wiedzy."
+                    },
+                    etyka: {
+                        1: "Zinwentaryzuj systemy AI stosowane w mieście i oceń ich wpływ na prawa mieszkańców.",
+                        2: "Opracuj politykę przejrzystości AI i poinformuj mieszkańców o sposobach wykorzystania ich danych.",
+                        3: "Wdróż procedury audytu algorytmicznego dla systemów podejmujących decyzje dotyczące mieszkańców.",
+                        4: "Sklasyfikuj systemy AI zgodnie z unijnym Aktem o AI i dostosuj procesy do wymogów wysokiego ryzyka.",
+                        5: "Powołaj radę ds. etyki AI z udziałem mieszkańców jako stały organ doradczy miasta."
+                    }
+                };
+
                 const sections = Object.keys(this.questions);
                 const overallScore = sections
                     .reduce((sum, sec) => sum + this.calculateScore(sec), 0) / sections.length;
