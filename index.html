@@ -4,410 +4,568 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Readiness Assessment</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash/4.17.21/lodash.min.js"></script>
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&display=swap" />
     <style>
+        /* ── Quantica Design Tokens ──────────────────────────────────────────── */
         :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --info-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-            --primary-color: #667eea;
-            --secondary-color: #764ba2;
-            --accent-color: #4facfe;
-            --primary: #667eea;
-            --primary-hover: #764ba2;
-            --selected: #f5576c;
-            --success: #43e97b;
-            --warning: #eab308;
-            --danger: #ef4444;
-            --text-dark: #2d3748;
-            --text-light: #718096;
-            --bg-light: #f7fafc;
-            --bg-white: #ffffff;
+            --quantica-pink:    #C41E54;
+            --rose-pink:        #FF4D9A;
+            --deep-berry:       #8A004C;
+            --near-black:       #111111;
+            --white:            #FFFFFF;
+
+            --magenta-tint:     #FFE6F1;
+            --cool-gray:        #E6E8EC;
+            --light-gray:       #F5F6F8;
+            --silver:           #D1D5DB;
+
+            --violet-primary:   #7030A0;
+            --violet-deep:      #4F1F75;
+            --mist:             #F4EEFA;
+
+            --amber:            #FFC107;
+
+            --fg-1:             #111111;
+            --fg-2:             #3A3A42;
+            --fg-3:             #6B6B76;
+            --fg-4:             #9A9AA5;
+            --fg-on-pink:       #FFFFFF;
+            --fg-brand:         #C41E54;
+
+            --bg-1:             #FFFFFF;
+            --bg-2:             #F5F6F8;
+
+            --border-1:         #E6E8EC;
+            --border-2:         #D1D5DB;
+            --border-brand:     #C41E54;
+            --border-focus:     #FF4D9A;
+
+            --status-success:   #00A37A;
+            --status-warning:   #FFC107;
+            --status-error:     #DC2626;
+
+            --grad-magenta:     linear-gradient(90deg, #C41E54 0%, #FF20A1 50%, #7030A0 100%);
+
+            --font-sans:        "Satoshi", "Inter", system-ui, -apple-system, sans-serif;
+            --font-mono:        "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+            --fs-h1:            56px;
+            --fs-h2:            28px;
+            --fs-h3:            20px;
+            --fs-body-lg:       18px;
+            --fs-body:          14px;
+            --fs-caption:       12px;
+
+            --lh-h1:            1.1;
+            --lh-h2:            1.25;
+            --lh-h3:            1.4;
+            --lh-body:          1.65;
+
+            --tracking-h1:      -0.01em;
+            --tracking-caps:    0.08em;
+
+            --fw-regular:       400;
+            --fw-medium:        500;
+            --fw-bold:          700;
+
+            --space-1:  4px;
+            --space-2:  8px;
+            --space-3:  12px;
+            --space-4:  16px;
+            --space-5:  24px;
+            --space-6:  32px;
+            --space-7:  40px;
+            --space-8:  48px;
+            --space-9:  64px;
+            --space-10: 96px;
+
+            --radius-xs:   4px;
+            --radius-sm:   6px;
+            --radius-md:   10px;
+            --radius-lg:   16px;
+            --radius-pill: 999px;
+
+            --shadow-xs:        0 1px 2px rgba(17,17,17,0.04);
+            --shadow-sm:        0 2px 6px rgba(17,17,17,0.06);
+            --shadow-md:        0 8px 24px rgba(17,17,17,0.08);
+            --shadow-pink-soft: 0 6px 18px rgba(196,30,84,0.10);
+            --inner-hairline:   inset 0 0 0 1px rgba(17,17,17,0.06);
+
+            --ease-standard:  cubic-bezier(0.2, 0.6, 0.2, 1);
+            --ease-out-soft:  cubic-bezier(0.16, 1, 0.3, 1);
+            --dur-1: 120ms;
+            --dur-2: 200ms;
+            --dur-3: 320ms;
         }
-        * {
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(180deg, #f7fafc 0%, #edf2f7 100%);
-            color: var(--text-dark);
+
+        /* ── Reset & base ────────────────────────────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html {
+            font-family: var(--font-sans);
+            font-size: 16px;
+            color: var(--fg-1);
+            background: var(--bg-2);
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
             scroll-behavior: smooth;
-            line-height: 1.7;
-            min-height: 100vh;
         }
 
-        /* Scroll Progress Indicator */
+        body { min-height: 100vh; }
+
+        /* ── Scroll progress ─────────────────────────────────────────────────── */
         .scroll-indicator {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: rgba(102, 126, 234, 0.2);
-            z-index: 9999;
+            position: fixed; top: 0; left: 0; right: 0;
+            height: 3px; background: var(--border-1); z-index: 9999;
         }
-
         .scroll-progress {
             height: 100%;
-            background: var(--primary-gradient);
+            background: var(--grad-magenta);
             width: 0%;
-            transition: width 0.1s ease;
-            box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
-        }
-        .card {
-            background: var(--bg-white);
-            border-radius: 1rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            max-width: 900px;
-            margin: 30px auto;
-            padding: 2.5rem;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(102, 126, 234, 0.1);
-            position: relative;
-            overflow: hidden;
+            transition: width 0.1s var(--ease-standard);
         }
 
+        /* ── Card / page wrapper ─────────────────────────────────────────────── */
+        .card {
+            background: var(--bg-1);
+            max-width: 820px;
+            margin: var(--space-7) auto;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-1);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Magenta accent bar at the top */
         .card::before {
             content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: var(--primary-gradient);
+            display: block;
+            height: 3px;
+            background: var(--grad-magenta);
         }
 
-        .card:hover {
-            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.15);
-            transform: translateY(-2px);
+        .card > #app-inner {
+            padding: var(--space-9) var(--space-7);
         }
+
+        /* ── Typography ──────────────────────────────────────────────────────── */
         .title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--text-dark);
-            letter-spacing: -0.5px;
+            font-family: var(--font-sans);
+            font-size: var(--fs-h1);
+            line-height: var(--lh-h1);
+            letter-spacing: var(--tracking-h1);
+            font-weight: var(--fw-bold);
+            color: var(--fg-1);
+            margin-bottom: var(--space-4);
         }
+
         .subtitle {
-            font-size: 1.1rem;
-            color: var(--text-light);
-            margin-bottom: 1.5rem;
-            line-height: 1.7;
-            letter-spacing: 0.3px;
+            font-size: var(--fs-body-lg);
+            line-height: var(--lh-body);
+            color: var(--fg-2);
+            margin-bottom: var(--space-6);
+            max-width: 56ch;
         }
+
+        .welcome-screen .subtitle { margin-left: auto; margin-right: auto; }
+
+        h3 {
+            font-size: var(--fs-caption);
+            font-weight: var(--fw-medium);
+            text-transform: uppercase;
+            letter-spacing: var(--tracking-caps);
+            color: var(--fg-brand);
+            margin: var(--space-7) 0 var(--space-4);
+        }
+
+        /* ── Progress bar ────────────────────────────────────────────────────── */
         .progress {
-            height: 14px;
-            background: rgba(102, 126, 234, 0.1);
-            border-radius: 1rem;
-            margin: 1rem 0;
+            height: 4px;
+            background: var(--border-1);
+            border-radius: var(--radius-pill);
+            margin: var(--space-4) 0;
             overflow: hidden;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
         }
         .progress-bar {
             height: 100%;
-            background: var(--primary-gradient);
-            border-radius: 1rem;
-            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+            background: var(--grad-magenta);
+            border-radius: var(--radius-pill);
+            transition: width var(--dur-3) var(--ease-out-soft);
         }
-        .question {
-            margin: 2rem 0;
-        }
-        .question-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-        .question-number {
-            font-size: 0.875rem;
-            color: var(--text-light);
-            font-weight: 500;
-        }
-        .button {
-            background: var(--primary-gradient);
-            color: white;
-            border: none;
-            padding: 14px 24px;
-            border-radius: 0.75rem;
-            cursor: pointer;
-            width: 100%;
-            margin: 6px 0;
-            text-align: left;
-            font-size: 1rem;
-            font-weight: 500;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
-            position: relative;
-            overflow: hidden;
-        }
-        .button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .button:hover:not(:disabled)::before {
-            opacity: 1;
-        }
-        .button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.35);
-        }
-        .button:active:not(:disabled) {
-            transform: translateY(0);
-        }
-        .button:focus {
-            outline: 3px solid rgba(102, 126, 234, 0.4);
-            outline-offset: 2px;
-        }
-        .button.selected {
-            background: var(--secondary-gradient);
-            box-shadow: 0 4px 12px rgba(245, 87, 108, 0.35);
-        }
-        .button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-        .button.secondary {
-            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-            box-shadow: 0 4px 12px rgba(107, 114, 128, 0.25);
-        }
-        .button.secondary:hover:not(:disabled) {
-            box-shadow: 0 6px 20px rgba(107, 114, 128, 0.35);
-        }
-        .button-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 2rem;
-        }
-        .button-group .button {
-            flex: 1;
-        }
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-        .result-card {
-            padding: 1.5rem;
-            border: 1px solid rgba(102, 126, 234, 0.15);
-            border-radius: 1rem;
-            background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(247,250,252,0.9) 100%);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .result-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.15);
-            border-color: rgba(102, 126, 234, 0.3);
-        }
-        .score {
-            font-size: 2.5rem;
-            font-weight: bold;
-            text-align: center;
-        }
+
+        /* ── Section navigator ───────────────────────────────────────────────── */
         .section-navigator {
             display: flex;
-            gap: 8px;
-            margin-bottom: 24px;
+            gap: var(--space-1);
+            margin-bottom: var(--space-6);
             overflow-x: auto;
-            padding: 4px 0;
+            padding-bottom: var(--space-1);
         }
+
         .section-indicator {
             flex: 1;
             min-width: 100px;
-            padding: 14px 10px;
-            border-radius: 0.75rem;
+            padding: var(--space-3) var(--space-3);
+            border-radius: var(--radius-md);
             text-align: center;
-            font-size: 0.875rem;
-            background: rgba(229, 231, 235, 0.7);
-            color: var(--text-light);
-            border: 2px solid transparent;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 11px;
+            font-weight: var(--fw-medium);
+            background: var(--bg-2);
+            color: var(--fg-3);
+            border: 1px solid var(--border-1);
+            transition: all var(--dur-2) var(--ease-standard);
             cursor: pointer;
-            font-weight: 500;
-        }
-        .section-indicator:hover {
-            background: rgba(102, 126, 234, 0.1);
-            transform: translateY(-2px);
-            border-color: rgba(102, 126, 234, 0.3);
-        }
-        .section-indicator.current {
-            background: var(--primary-gradient);
-            color: white;
-            font-weight: 600;
-            border-color: var(--primary-hover);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        }
-        .section-indicator.completed {
-            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-            color: #065f46;
-            border-color: #34d399;
-        }
-        .welcome-screen {
-            text-align: center;
-        }
-        .feature-list {
-            text-align: left;
-            margin: 2rem auto;
-            max-width: 500px;
-        }
-        .feature-item {
-            padding: 12px 0;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .feature-icon {
-            width: 32px;
-            height: 32px;
-            background: var(--primary-gradient);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            font-weight: 600;
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-            flex-shrink: 0;
-        }
-        .review-section {
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.03) 0%, rgba(79, 172, 254, 0.03) 100%);
-            border-radius: 1rem;
-            border: 1px solid rgba(102, 126, 234, 0.1);
-        }
-        .review-question {
-            padding: 1rem 0;
-            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
-        }
-        .review-question:last-child {
-            border-bottom: none;
-        }
-        .review-answer {
-            color: var(--selected);
-            font-weight: 600;
-            margin-top: 0.5rem;
-        }
-        .recommendation-card {
-            margin: 1rem 0;
-            padding: 1.25rem;
-            border-left: 5px solid var(--primary-color);
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(79, 172, 254, 0.08) 100%);
-            border-radius: 0.75rem;
-            transition: all 0.3s ease;
-        }
-        .recommendation-card:hover {
-            transform: translateX(4px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
-        }
-        .recommendation-card.warning {
-            border-left-color: var(--warning);
-            background: linear-gradient(135deg, rgba(234, 179, 8, 0.08) 0%, rgba(234, 179, 8, 0.05) 100%);
-        }
-        .recommendation-card.danger {
-            border-left-color: var(--danger);
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(239, 68, 68, 0.05) 100%);
-        }
-        .download-buttons {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 12px;
-            margin: 2rem 0;
-        }
-        .icon-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            line-height: 1.4;
         }
 
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-            .card {
-                padding: 16px;
-            }
-            .title {
-                font-size: 1.25rem;
-            }
-            .button-group {
-                flex-direction: column;
-            }
-            .section-navigator {
-                gap: 4px;
-            }
-            .section-indicator {
-                min-width: 80px;
-                padding: 8px 4px;
-                font-size: 0.75rem;
-            }
-            .results-grid {
-                grid-template-columns: 1fr;
-            }
+        .section-indicator:hover {
+            background: var(--magenta-tint);
+            color: var(--fg-brand);
+            border-color: var(--border-brand);
+        }
+
+        .section-indicator.current {
+            background: var(--quantica-pink);
+            color: var(--fg-on-pink);
+            border-color: var(--quantica-pink);
+            box-shadow: var(--shadow-pink-soft);
+        }
+
+        .section-indicator.completed {
+            background: var(--mist);
+            color: var(--violet-primary);
+            border-color: var(--violet-primary);
+        }
+
+        /* ── Question ────────────────────────────────────────────────────────── */
+        .question {
+            margin: var(--space-7) 0;
+        }
+
+        .question-header { margin-bottom: var(--space-3); }
+
+        .question-number {
+            font-size: var(--fs-caption);
+            font-weight: var(--fw-medium);
+            text-transform: uppercase;
+            letter-spacing: var(--tracking-caps);
+            color: var(--fg-brand);
+        }
+
+        /* ── Buttons — primary / secondary ───────────────────────────────────── */
+        .button {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding: 10px 24px;
+            border-radius: var(--radius-pill);
+            font-family: var(--font-sans);
+            font-size: var(--fs-body);
+            font-weight: var(--fw-medium);
+            cursor: pointer;
+            border: 1.5px solid transparent;
+            transition: background var(--dur-2) var(--ease-standard),
+                        color var(--dur-2) var(--ease-standard),
+                        border-color var(--dur-2) var(--ease-standard),
+                        box-shadow var(--dur-2) var(--ease-standard),
+                        transform var(--dur-1) var(--ease-standard);
+            white-space: nowrap;
+            text-decoration: none;
+            background: var(--quantica-pink);
+            color: var(--fg-on-pink);
+            border-color: var(--quantica-pink);
+            box-shadow: var(--shadow-pink-soft);
+            width: 100%;
+            margin: var(--space-2) 0;
+            text-align: left;
+            justify-content: flex-start;
+        }
+
+        .button:hover:not(:disabled) {
+            background: var(--deep-berry);
+            border-color: var(--deep-berry);
+        }
+
+        .button:focus-visible {
+            outline: 2px solid var(--border-focus);
+            outline-offset: 2px;
+        }
+
+        .button.selected {
+            background: var(--deep-berry);
+            border-color: var(--deep-berry);
+        }
+
+        .button.selected::after {
+            content: '✓';
+            margin-left: auto;
+            font-weight: var(--fw-bold);
+        }
+
+        .button:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .button.secondary {
+            background: transparent;
+            color: var(--quantica-pink);
+            border-color: var(--quantica-pink);
+            box-shadow: none;
+        }
+
+        .button.secondary:hover:not(:disabled) {
+            background: var(--magenta-tint);
+        }
+
+        /* Answer option buttons — outlined default, filled when selected */
+        .answer-btn {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            width: 100%;
+            margin: var(--space-2) 0;
+            padding: var(--space-4) var(--space-5);
+            border-radius: var(--radius-md);
+            font-family: var(--font-sans);
+            font-size: var(--fs-body-lg);
+            font-weight: var(--fw-regular);
+            cursor: pointer;
+            border: 1.5px solid var(--border-1);
+            background: var(--bg-1);
+            color: var(--fg-2);
+            text-align: left;
+            transition: all var(--dur-2) var(--ease-standard);
+        }
+
+        .answer-btn:hover:not(:disabled) {
+            border-color: var(--border-brand);
+            background: var(--magenta-tint);
+            color: var(--fg-1);
+            transform: translateX(4px);
+        }
+
+        .answer-btn.selected {
+            background: var(--quantica-pink);
+            color: var(--fg-on-pink);
+            border-color: var(--quantica-pink);
+            box-shadow: var(--shadow-pink-soft);
+        }
+
+        .answer-btn.selected::after {
+            content: '✓';
+            margin-left: auto;
+            font-weight: var(--fw-bold);
+        }
+
+        .answer-btn.selected:hover {
+            background: var(--deep-berry);
+            border-color: var(--deep-berry);
+            transform: none;
+        }
+
+        .answer-btn:focus-visible {
+            outline: 2px solid var(--border-focus);
+            outline-offset: 2px;
+        }
+
+        /* Nav button group */
+        .button-group {
+            display: flex;
+            gap: var(--space-3);
+            margin-top: var(--space-7);
+        }
+
+        .button-group .button {
+            flex: 1;
+            text-align: center;
+            justify-content: center;
+            margin: 0;
+        }
+
+        /* ── Welcome screen ──────────────────────────────────────────────────── */
+        .welcome-screen { text-align: center; }
+
+        .feature-list {
+            text-align: left;
+            margin: var(--space-6) auto;
+            max-width: 460px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+            padding: var(--space-3) 0;
+            border-bottom: 1px solid var(--border-1);
+            font-size: var(--fs-body-lg);
+            color: var(--fg-2);
+        }
+
+        .feature-item:last-child { border-bottom: none; }
+
+        .feature-icon {
+            width: 28px; height: 28px;
+            background: var(--magenta-tint);
+            color: var(--fg-brand);
+            border-radius: var(--radius-sm);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; font-weight: var(--fw-bold); flex-shrink: 0;
+        }
+
+        /* ── Results grid ────────────────────────────────────────────────────── */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-3);
+            margin: var(--space-5) 0;
+        }
+
+        .result-card {
+            padding: var(--space-5);
+            background: var(--bg-2);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-1);
+            transition: box-shadow var(--dur-2) var(--ease-standard);
+        }
+
+        .result-card:hover {
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* ── Score display ───────────────────────────────────────────────────── */
+        .score {
+            font-family: var(--font-sans);
+            font-size: 80px;
+            font-weight: var(--fw-bold);
+            line-height: 1;
+            letter-spacing: -0.03em;
+            text-align: center;
+            color: var(--quantica-pink);
+            margin: var(--space-5) 0 var(--space-3);
+        }
+
+        /* ── Review ──────────────────────────────────────────────────────────── */
+        .review-section {
+            margin: var(--space-5) 0;
+            padding: var(--space-5);
+            background: var(--bg-2);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-1);
+        }
+
+        .review-question {
+            padding: var(--space-3) 0;
+            border-bottom: 1px solid var(--border-1);
+            font-size: var(--fs-body-lg);
+            color: var(--fg-2);
+        }
+
+        .review-question:last-child { border-bottom: none; }
+
+        .review-answer {
+            color: var(--fg-brand);
+            font-weight: var(--fw-medium);
+            margin-top: var(--space-1);
+        }
+
+        /* ── Recommendation cards ────────────────────────────────────────────── */
+        .recommendation-card {
+            margin: var(--space-3) 0;
+            padding: var(--space-5);
+            border-left: 3px solid var(--quantica-pink);
+            background: var(--magenta-tint);
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+            font-size: var(--fs-body-lg);
+            color: var(--fg-1);
+            line-height: var(--lh-body);
+        }
+
+        .recommendation-card.warning {
+            border-left-color: var(--status-warning);
+            background: rgba(255,193,7,0.10);
+        }
+
+        .recommendation-card.danger {
+            border-left-color: var(--status-error);
+            background: rgba(220,38,38,0.06);
+        }
+
+        .recommendation-card.info {
+            border-left-color: var(--violet-primary);
+            background: var(--mist);
+        }
+
+        .recommendation-card.success {
+            border-left-color: var(--status-success);
+            background: rgba(0,163,122,0.08);
+        }
+
+        /* ── Download buttons ────────────────────────────────────────────────── */
+        .download-buttons {
+            display: flex;
+            gap: var(--space-3);
+            margin: var(--space-5) 0;
+            justify-content: center;
+        }
+
+        .download-buttons .button {
+            width: auto;
+            flex: 0 1 auto;
+            min-width: 120px;
+            justify-content: center;
+        }
+
+        .icon-button { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); }
+
+        /* ── Help / keyboard hint ────────────────────────────────────────────── */
+        .help-text {
+            margin-top: var(--space-5);
+            padding: var(--space-4) var(--space-5);
+            background: var(--bg-2);
+            border: 1px solid var(--border-1);
+            border-radius: var(--radius-md);
+            font-size: var(--fs-body);
+            color: var(--fg-3);
+            text-align: center;
         }
 
         .kbd {
-            background: #f3f4f6;
-            border: 1px solid #d1d5db;
-            border-radius: 4px;
-            padding: 2px 6px;
-            font-family: monospace;
-            font-size: 0.875rem;
+            background: var(--bg-1);
+            border: 1px solid var(--border-2);
+            border-radius: var(--radius-xs);
+            padding: 2px 7px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--fg-2);
         }
 
-        .help-text {
-            font-size: 0.875rem;
-            color: var(--text-light);
-            margin-top: 1.5rem;
-            padding: 1rem 1.25rem;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(79, 172, 254, 0.05) 100%);
-            border-radius: 0.75rem;
-            border-left: 3px solid var(--accent-color);
+        /* ── Animations ──────────────────────────────────────────────────────── */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        #app-inner { animation: fadeIn var(--dur-3) var(--ease-out-soft); }
+
+        .question { animation: fadeIn var(--dur-2) var(--ease-standard); }
+
+        /* ── Responsive ──────────────────────────────────────────────────────── */
+        @media (max-width: 860px) {
+            .card { margin: 0; border-radius: 0; border-left: none; border-right: none; }
         }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .card {
-            animation: fadeInUp 0.6s ease forwards;
-        }
-
-        .question {
-            animation: slideIn 0.4s ease forwards;
+        @media (max-width: 640px) {
+            .card > #app-inner { padding: var(--space-7) var(--space-5); }
+            .title { font-size: 2rem; }
+            .button-group { flex-direction: column; }
+            .section-indicator { min-width: 72px; font-size: 10px; }
+            .results-grid { grid-template-columns: 1fr; }
+            .score { font-size: 64px; }
         }
     </style>
 </head>
@@ -417,8 +575,10 @@
         <div class="scroll-progress" id="scrollProgress"></div>
     </div>
 
-    <div id="app" class="card"></div>
-    
+    <div class="card">
+        <div id="app" id="app-inner"></div>
+    </div>
+
     <script>
         class Survey {
             constructor() {
@@ -586,11 +746,11 @@
             }
 
             getScoreColor(score) {
-                if (score >= 80) return '#22c55e';
-                if (score >= 60) return '#3b82f6';
-                if (score >= 40) return '#eab308';
-                if (score >= 20) return '#f97316';
-                return '#ef4444';
+                if (score >= 80) return '#00A37A';
+                if (score >= 60) return '#7030A0';
+                if (score >= 40) return '#C41E54';
+                if (score >= 20) return '#FFC107';
+                return '#DC2626';
             }
 
             getScoreLabel(score) {
@@ -672,8 +832,8 @@
 
                             return `
                                 <div class="${classes.join(' ')}" onclick="survey.goToSection('${section}')">
-                                    <div style="font-size: 0.75rem; opacity: 0.8;">Część ${index + 1}</div>
-                                    <div>${section}</div>
+                                    <div style="font-size: 10px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.06em;">Część ${index + 1}</div>
+                                    <div style="margin-top: 2px;">${section}</div>
                                 </div>
                             `;
                         }).join('')}
@@ -807,24 +967,19 @@
                     const savedAnswersCount = Object.keys(this.answers).length;
                     return `
                         <div class="welcome-screen">
-                            <h1 class="title">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-robot" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 10px; color: var(--primary-color);">
-                                    <path d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5M3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.6 26.6 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.93.93 0 0 1-.765.935c-.845.147-2.34.346-4.235.346s-3.39-.2-4.235-.346A.93.93 0 0 1 3 9.219zm4.542-.827a.25.25 0 0 0-.217.068l-.92.9a24.8 24.8 0 0 1-1.871-.183.25.25 0 0 0-.068.495c.55.076 1.232.149 2.02.193a.25.25 0 0 0 .189-.071l.754-.736.847 1.71a.25.25 0 0 0 .404.062l.932-.97a25 25 0 0 0 1.922-.188.25.25 0 0 0-.068-.495c-.538.074-1.207.145-1.98.189a.25.25 0 0 0-.166.076l-.754.785-.842-1.7a.25.25 0 0 0-.182-.135"/>
-                                    <path d="M8.5 1.866a1 1 0 1 0-1 0V3h-2A4.5 4.5 0 0 0 1 7.5V8a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1v-.5A4.5 4.5 0 0 0 10.5 3h-2zM14 7.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5A3.5 3.5 0 0 1 5.5 4h5A3.5 3.5 0 0 1 14 7.5"/>
-                                </svg>
-                                Ocena Gotowości AI
-                            </h1>
+                            <div style="font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-brand); margin-bottom: 16px;">Ocena gotowości</div>
+                            <h1 class="title">Twoja ankieta czeka</h1>
                             <p class="subtitle">
                                 Znaleziono zapisaną ankietę z ${savedAnswersCount} odpowiedziami.
                                 Czy chcesz kontynuować czy zacząć od nowa?
                             </p>
 
-                            <div class="button-group">
-                                <button class="button" onclick="survey.continueSurvey()">
-                                    📥 Kontynuuj ankietę
+                            <div class="button-group" style="justify-content: center; max-width: 480px; margin: 0 auto;">
+                                <button class="button" style="width: auto; flex: 1;" onclick="survey.continueSurvey()">
+                                    Kontynuuj ankietę
                                 </button>
-                                <button class="button secondary" onclick="survey.startFresh()">
-                                    🔄 Zacznij od nowa
+                                <button class="button secondary" style="width: auto; flex: 1;" onclick="survey.startFresh()">
+                                    Zacznij od nowa
                                 </button>
                             </div>
                         </div>
@@ -833,53 +988,48 @@
 
                 return `
                     <div class="welcome-screen">
-                        <h1 class="title">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-robot" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 10px; color: var(--primary-color);">
-                                <path d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5M3 8.062C3 6.76 4.235 5.765 5.53 5.886a26.6 26.6 0 0 0 4.94 0C11.765 5.765 13 6.76 13 8.062v1.157a.93.93 0 0 1-.765.935c-.845.147-2.34.346-4.235.346s-3.39-.2-4.235-.346A.93.93 0 0 1 3 9.219zm4.542-.827a.25.25 0 0 0-.217.068l-.92.9a24.8 24.8 0 0 1-1.871-.183.25.25 0 0 0-.068.495c.55.076 1.232.149 2.02.193a.25.25 0 0 0 .189-.071l.754-.736.847 1.71a.25.25 0 0 0 .404.062l.932-.97a25 25 0 0 0 1.922-.188.25.25 0 0 0-.068-.495c-.538.074-1.207.145-1.98.189a.25.25 0 0 0-.166.076l-.754.785-.842-1.7a.25.25 0 0 0-.182-.135"/>
-                                <path d="M8.5 1.866a1 1 0 1 0-1 0V3h-2A4.5 4.5 0 0 0 1 7.5V8a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1v1a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1v-.5A4.5 4.5 0 0 0 10.5 3h-2zM14 7.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5A3.5 3.5 0 0 1 5.5 4h5A3.5 3.5 0 0 1 14 7.5"/>
-                            </svg>
-                            Ocena Gotowości AI
-                        </h1>
+                        <div style="font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-brand); margin-bottom: 16px;">AI w samorządzie</div>
+                        <h1 class="title">Ocena Gotowości AI</h1>
                         <p class="subtitle">
-                            Witamy w narzędziu do oceny gotowości Twojej organizacji do wdrożenia sztucznej inteligencji.
-                            To badanie pomoże Ci zidentyfikować mocne strony oraz obszary wymagające rozwoju.
+                            Narzędzie do oceny gotowości miasta na wdrożenie sztucznej inteligencji.
+                            Zidentyfikuj mocne strony i obszary wymagające uwagi.
                         </p>
 
                         <div class="feature-list">
                             <div class="feature-item">
-                                <div class="feature-icon">✓</div>
+                                <div class="feature-icon">→</div>
                                 <div>${totalQuestions} pytań w ${Object.keys(this.questions).length} kategoriach</div>
                             </div>
                             <div class="feature-item">
-                                <div class="feature-icon">⏱</div>
+                                <div class="feature-icon">~</div>
                                 <div>Szacowany czas: ~${estimatedTime} minut</div>
                             </div>
                             <div class="feature-item">
-                                <div class="feature-icon">💾</div>
+                                <div class="feature-icon">↓</div>
                                 <div>Automatyczny zapis postępu</div>
                             </div>
                             <div class="feature-item">
-                                <div class="feature-icon">📊</div>
+                                <div class="feature-icon">%</div>
                                 <div>Szczegółowy raport z rekomendacjami</div>
                             </div>
                             <div class="feature-item">
-                                <div class="feature-icon">⬇</div>
+                                <div class="feature-icon">↗</div>
                                 <div>Eksport wyników (CSV, JSON)</div>
                             </div>
                         </div>
 
-                        <div class="button-group">
-                            <button class="button" onclick="survey.startSurvey(true)">
+                        <div class="button-group" style="justify-content: center; max-width: 480px; margin: 0 auto;">
+                            <button class="button" style="width: auto; flex: 1;" onclick="survey.startSurvey(true)">
                                 Pytanie po pytaniu
                             </button>
-                            <button class="button secondary" onclick="survey.startSurvey(false)">
+                            <button class="button secondary" style="width: auto; flex: 1;" onclick="survey.startSurvey(false)">
                                 Wszystkie pytania
                             </button>
                         </div>
 
-                        <div class="help-text">
-                            <strong>Wskazówka:</strong> Tryb "Pytanie po pytaniu" pozwala skupić się na jednym pytaniu naraz.
-                            Użyj strzałek lub klawiszy 1-5 do nawigacji.
+                        <div class="help-text" style="margin-top: 32px;">
+                            <strong>Wskazówka:</strong> Tryb &ldquo;Pytanie po pytaniu&rdquo; pozwala skupić się na jednym pytaniu naraz.
+                            Użyj strzałek lub klawiszy <span class="kbd">1</span>&ndash;<span class="kbd">5</span> do nawigacji.
                         </div>
                     </div>
                 `;
@@ -889,25 +1039,20 @@
                 const sections = Object.keys(this.questions);
 
                 return `
-                    <h2 class="title">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-clipboard-check" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 10px; color: var(--primary-color);">
-                            <path d="M4 1.5A1.5 1.5 0 0 1 5.5 0h5A1.5 1.5 0 0 1 12 1.5V2h1.5A1.5 1.5 0 0 1 15 3.5v11A1.5 1.5 0 0 1 13.5 16h-11A1.5 1.5 0 0 1 1 14.5v-11A1.5 1.5 0 0 1 2.5 2H4zm1 0a.5.5 0 0 0-.5.5V2h7v-.5a.5.5 0 0 0-.5-.5z"/>
-                            <path d="M10.97 7.03a.75.75 0 0 1 0 1.06l-3 3a.75.75 0 0 1-1.06 0l-1.5-1.5a.75.75 0 1 1 1.06-1.06L7.5 9.94l2.44-2.91a.75.75 0 0 1 1.03 0"/>
-                        </svg>
-                        Przegląd odpowiedzi
-                    </h2>
+                    <div style="font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-brand); margin-bottom: 16px;">Przegląd</div>
+                    <h2 class="title">Twoje odpowiedzi</h2>
                     <p class="subtitle">Sprawdź swoje odpowiedzi przed wyświetleniem wyników.</p>
 
                     ${sections.map(section => {
                         const sectionQuestions = this.questions[section];
                         return `
                             <div class="review-section">
-                                <h3 style="margin-top: 0; color: var(--primary);">${section}</h3>
+                                <h3 style="margin-top: 0; margin-bottom: 8px;">${section}</h3>
                                 ${sectionQuestions.map(q => {
                                     const detail = this.answerDetails[q.id];
                                     return detail ? `
                                         <div class="review-question">
-                                            <div style="font-weight: 500;">${detail.question}</div>
+                                            <div style="font-weight: 500; color: var(--fg-1);">${detail.question}</div>
                                             <div class="review-answer">→ ${detail.answer}</div>
                                         </div>
                                     ` : '';
@@ -918,10 +1063,10 @@
 
                     <div class="button-group">
                         <button class="button secondary" onclick="survey.showReview = false; survey.render()">
-                            Wróć do ankiety
+                            ← Wróć do ankiety
                         </button>
                         <button class="button" onclick="survey.showResults = true; survey.showReview = false; survey.render()">
-                            Pokaż wyniki
+                            Pokaż wyniki →
                         </button>
                     </div>
                 `;
@@ -939,25 +1084,20 @@
                 });
 
                 return `
-                    <h1 class="title">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 10px; color: var(--primary-color);">
-                            <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07"/>
-                        </svg>
-                        Wyniki Oceny Gotowości AI
-                    </h1>
-                    <div class="score" style="color: ${this.getScoreColor(overallScore)}">
-                        ${Math.round(overallScore)}%
-                    </div>
-                    <div style="text-align: center; margin-bottom: 2rem; font-size: 1.25rem; font-weight: 500;">
+                    <div style="font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-brand); margin-bottom: 16px;">Wyniki</div>
+                    <h1 class="title">Ocena Gotowości AI</h1>
+
+                    <div class="score">${Math.round(overallScore)}%</div>
+                    <div style="text-align: center; margin-bottom: 32px; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-3);">
                         ${this.getScoreLabel(overallScore)}
                     </div>
 
                     <div class="download-buttons">
                         <button class="button icon-button" onclick="survey.downloadJSON()">
-                            📄 JSON
+                            JSON
                         </button>
-                        <button class="button icon-button" onclick="survey.downloadCSV()">
-                            📊 CSV
+                        <button class="button secondary icon-button" onclick="survey.downloadCSV()">
+                            CSV
                         </button>
                     </div>
 
@@ -967,16 +1107,16 @@
                             const score = this.calculateScore(section);
                             return `
                                 <div class="result-card">
-                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                                        <span style="font-weight: 500;">${section}</span>
-                                        <span style="color: ${this.getScoreColor(score)}; font-weight: bold;">
+                                    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
+                                        <span style="font-size: 14px; font-weight: 500; color: var(--fg-1);">${section}</span>
+                                        <span style="font-size: 20px; font-weight: 700; color: ${this.getScoreColor(score)};">
                                             ${Math.round(score)}%
                                         </span>
                                     </div>
                                     <div class="progress">
-                                        <div class="progress-bar" style="width: ${score}%; background: ${this.getScoreColor(score)}"></div>
+                                        <div class="progress-bar" style="width: ${score}%; background: ${this.getScoreColor(score)};"></div>
                                     </div>
-                                    <div style="font-size: 0.875rem; color: var(--text-light); margin-top: 0.5rem;">
+                                    <div style="font-size: 12px; color: var(--fg-3); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.06em;">
                                         ${this.getScoreLabel(score)}
                                     </div>
                                 </div>
@@ -993,7 +1133,7 @@
 
                     <div class="button-group">
                         <button class="button secondary" onclick="survey.showResults = false; survey.showReview = true; survey.render()">
-                            Przejrzyj odpowiedzi
+                            ← Przejrzyj odpowiedzi
                         </button>
                         <button class="button" onclick="survey.reset()">
                             Rozpocznij ponownie
@@ -1020,8 +1160,8 @@
                         <div class="progress">
                             <div class="progress-bar" style="width: ${progress}%"></div>
                         </div>
-                        <div style="text-align: right; font-size: 0.875rem; color: var(--text-light); margin-bottom: 1rem;">
-                            ${answeredQuestions}/${totalQuestions} pytań • ${Math.round(progress)}% ukończono
+                        <div style="text-align: right; font-size: 12px; color: var(--fg-3); margin-bottom: 16px; font-family: var(--font-mono);">
+                            ${answeredQuestions}/${totalQuestions} pytań &nbsp;·&nbsp; ${Math.round(progress)}% ukończono
                         </div>
 
                         <div class="question">
@@ -1030,15 +1170,15 @@
                                     Pytanie ${this.currentQuestionIndex + 1} z ${currentQuestions.length}
                                 </span>
                             </div>
-                            <p style="font-weight: 500; font-size: 1.25rem; margin: 1rem 0;">
+                            <p style="font-size: 20px; font-weight: 500; line-height: 1.4; color: var(--fg-1); margin: 16px 0 24px;">
                                 ${question.text}
                             </p>
                             <div>
                                 ${question.options.map((option, idx) => `
                                     <button
-                                        class="button ${this.answers[question.id] === question.scores[idx] ? 'selected' : ''}"
+                                        class="answer-btn ${this.answers[question.id] === question.scores[idx] ? 'selected' : ''}"
                                         onclick="survey.handleAnswer('${question.id}', ${question.scores[idx]}, ${JSON.stringify(question).replace(/"/g, '&quot;')}, ${idx})">
-                                        <span style="opacity: 0.7; margin-right: 8px;">${idx + 1}.</span>${option}
+                                        <span style="font-family: var(--font-mono); font-size: 11px; opacity: 0.6; min-width: 20px;">${idx + 1}.</span>${option}
                                     </button>
                                 `).join('')}
                             </div>
@@ -1050,12 +1190,12 @@
                                 <button
                                     class="button secondary"
                                     onclick="survey.showReview = true; survey.showWelcome = false; survey.render()">
-                                    📋 Przejrzyj odpowiedzi
+                                    Przejrzyj odpowiedzi
                                 </button>
                                 <button
                                     class="button"
                                     onclick="survey.showResults = true; survey.showReview = false; survey.showWelcome = false; survey.render()">
-                                    📊 Wyniki
+                                    Zobacz wyniki →
                                 </button>
                             ` : `
                                 <button
@@ -1073,7 +1213,7 @@
                         </div>
 
                         <div class="help-text">
-                            <strong>Nawigacja:</strong> Użyj strzałek lub klawiszy <span class="kbd">1</span>-<span class="kbd">5</span> do szybkiego wyboru
+                            Nawigacja: strzałki klawiatury lub klawisze <span class="kbd">1</span>&ndash;<span class="kbd">5</span> do szybkiego wyboru
                         </div>
                     `;
                 } else {
@@ -1087,7 +1227,7 @@
                         <div class="progress">
                             <div class="progress-bar" style="width: ${progress}%"></div>
                         </div>
-                        <div style="text-align: right; font-size: 0.875rem; color: var(--text-light)">
+                        <div style="text-align: right; font-size: 12px; color: var(--fg-3); margin-bottom: 16px; font-family: var(--font-mono);">
                             ${Math.round(progress)}% ukończono
                         </div>
                         ${currentQuestions.map((q, idx) => `
@@ -1095,15 +1235,15 @@
                                 <div class="question-header">
                                     <span class="question-number">Pytanie ${idx + 1} z ${currentQuestions.length}</span>
                                 </div>
-                                <p style="font-weight: 500; font-size: 1.125rem">
+                                <p style="font-size: 18px; font-weight: 500; line-height: 1.4; color: var(--fg-1); margin: 12px 0 20px;">
                                     ${q.text}
                                 </p>
                                 <div>
                                     ${q.options.map((option, optIdx) => `
                                         <button
-                                            class="button ${this.answers[q.id] === q.scores[optIdx] ? 'selected' : ''}"
+                                            class="answer-btn ${this.answers[q.id] === q.scores[optIdx] ? 'selected' : ''}"
                                             onclick="survey.handleAnswer('${q.id}', ${q.scores[optIdx]}, ${JSON.stringify(q).replace(/"/g, '&quot;')}, ${optIdx})">
-                                            ${option}
+                                            <span style="font-family: var(--font-mono); font-size: 11px; opacity: 0.6; min-width: 20px;">${optIdx + 1}.</span>${option}
                                         </button>
                                     `).join('')}
                                 </div>
@@ -1114,12 +1254,12 @@
                                 <button
                                     class="button secondary"
                                     onclick="survey.showReview = true; survey.showWelcome = false; survey.render()">
-                                    📋 Przejrzyj odpowiedzi
+                                    Przejrzyj odpowiedzi
                                 </button>
                                 <button
                                     class="button"
                                     onclick="survey.showResults = true; survey.showReview = false; survey.showWelcome = false; survey.render()">
-                                    📊 Wyniki
+                                    Zobacz wyniki →
                                 </button>
                             ` : `
                                 <button
