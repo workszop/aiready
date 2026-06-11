@@ -13,6 +13,12 @@ Czy miasto przeprowadziło audyt zgodności przetwarzania danych z RODO w kontek
 Czy istnieje infrastruktura wymiany danych między wydziałami i służbami miejskimi?|Tak|Częściowo|Nie
 Czy miasto posiada procedury cyberbezpieczeństwa obejmujące nowe systemy informatyczne, w tym AI?|Tak, regularnie audytowane|Tak, bez regularnych audytów|Nie
 
+#Infrastruktura technologiczna
+Czy dostępne zasoby obliczeniowe i infrastruktura IT miasta pozwalają na uruchamianie rozwiązań AI?|Tak, w pełni|Częściowo|Nie
+Czy miasto ma określoną strategię utrzymania infrastruktury dla nowych rozwiązań (lokalnie, w chmurze lub hybrydowo)?|Tak, przyjęte podejście|W trakcie analizy|Nie
+Czy miasto dysponuje środowiskiem testowym do bezpiecznego pilotowania nowych rozwiązań, w tym AI?|Tak|W przygotowaniu|Nie
+Czy miasto monitoruje wydajność i koszty utrzymania systemów informatycznych?|Tak, systematycznie|Częściowo|Nie
+
 #Usługi miejskie i przypadki użycia
 Czy zidentyfikowano konkretne usługi miejskie do usprawnienia przez AI (ruch, odpady, bezpieczeństwo, zezwolenia, obsługa mieszkańców)?|Tak, kompleksowo|Częściowo|Nie
 Czy w mieście trwa projekt pilotażowy lub wdrożenie testowe z wykorzystaniem AI?|Tak, kilka|Tak, jeden|Nie
