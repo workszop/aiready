@@ -511,6 +511,57 @@
             background: rgba(0,163,122,0.08);
         }
 
+        /* ── Radar chart ─────────────────────────────────────────────────────── */
+        .radar-wrap {
+            display: flex;
+            justify-content: center;
+            margin: var(--space-6) 0 var(--space-7);
+        }
+
+        .radar-wrap svg {
+            overflow: visible;
+        }
+
+        /* ── Action cards ────────────────────────────────────────────────────── */
+        .action-card {
+            display: flex;
+            gap: var(--space-5);
+            align-items: flex-start;
+            padding: var(--space-5);
+            background: var(--bg-2);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-1);
+            border-left: 3px solid var(--quantica-pink);
+            margin: var(--space-3) 0;
+        }
+
+        .action-num {
+            font-family: var(--font-mono);
+            font-size: var(--fs-caption);
+            font-weight: 600;
+            color: var(--fg-brand);
+            min-width: var(--space-5);
+            padding-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .action-body { flex: 1; }
+
+        .action-eyebrow {
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: var(--tracking-caps);
+            color: var(--fg-brand);
+            margin-bottom: var(--space-1);
+        }
+
+        .action-text {
+            font-size: var(--fs-body-lg);
+            line-height: var(--lh-body);
+            color: var(--fg-1);
+        }
+
         /* ── Download buttons ────────────────────────────────────────────────── */
         .download-buttons {
             display: flex;
@@ -1078,71 +1129,182 @@
             }
 
             renderResults() {
-                const sections = Object.keys(this.questions);
-                const overallScore = sections
-                    .reduce((sum, sec) => sum + this.calculateScore(sec), 0) / sections.length;
+                const SECTION_KEY = {
+                    'Strategia i przywództwo': 'strategia',
+                    'Dane i prywatność': 'dane',
+                    'Usługi miejskie i przypadki użycia': 'uslugi',
+                    'Zespół i partnerstwa': 'zespol',
+                    'Etyka i zaufanie mieszkańców': 'etyka'
+                };
 
-                const allRecommendations = [];
-                sections.forEach(section => {
-                    const score = this.calculateScore(section);
-                    allRecommendations.push(...this.getRecommendations(score, section));
-                });
+                const ACTIONS = {
+                    strategia: {
+                        1: "Powołaj zespół roboczy ds. AI i wyznacz lidera cyfryzacji odpowiedzialnego za koordynację działań.",
+                        2: "Opracuj formalny dokument strategii AI i przedstaw go władzom miasta do akceptacji.",
+                        3: "Włącz strategię AI do wieloletniego planu finansowego i powiąż z mierzalnymi wskaźnikami KPI.",
+                        4: "Dołącz do krajowej lub unijnej sieci smart city i aktywnie dziel się doświadczeniami.",
+                        5: "Opublikuj otwarte sprawozdanie z realizacji strategii AI i buduj pozycję miasta jako punktu referencyjnego."
+                    },
+                    dane: {
+                        1: "Przeprowadź audyt dostępnych danych miejskich i zidentyfikuj kluczowe luki w jakości i dostępności.",
+                        2: "Opracuj politykę zarządzania danymi i wdróż procedury ochrony danych zgodne z RODO.",
+                        3: "Stwórz centralny katalog danych miejskich i uruchom platformę wymiany danych między wydziałami.",
+                        4: "Wdróż mechanizmy zarządzania jakością danych i przygotuj zbiory do zasilania systemów AI.",
+                        5: "Otwórz wybrane zbiory jako open data i nawiąż współpracę z uczelniami w zakresie ich analizy."
+                    },
+                    uslugi: {
+                        1: "Zidentyfikuj 2–3 usługi o największym potencjale automatyzacji i opracuj wstępne analizy możliwości.",
+                        2: "Uruchom pierwszy projekt pilotażowy AI z mierzalnymi celami i dedykowanym budżetem.",
+                        3: "Opracuj mapę drogową wdrożeń AI dla kolejnych usług i określ priorytety na podstawie analizy wartości.",
+                        4: "Wdróż monitoring efektywności systemów AI i prowadź regularne przeglądy wyników z interesariuszami.",
+                        5: "Standaryzuj procesy wdrożeń i udostępnij wypracowane rozwiązania innym miastom."
+                    },
+                    zespol: {
+                        1: "Wyznacz osobę odpowiedzialną za projekty cyfrowe i zapewnij jej podstawowe szkolenie z zakresu AI.",
+                        2: "Opracuj plan rozwoju kompetencji AI dla pracowników i nawiąż kontakt z lokalną uczelnią lub hubem technologicznym.",
+                        3: "Sformalizuj partnerstwa z dostawcami AI i określ kryteria oceny technologii w zamówieniach publicznych.",
+                        4: "Zbuduj interdyscyplinarny zespół ds. innowacji łączący IT, prawo i kompetencje merytoryczne wydziałów.",
+                        5: "Ustanów miejskie centrum kompetencji AI i uczestnictw aktywnie w europejskich sieciach wymiany wiedzy."
+                    },
+                    etyka: {
+                        1: "Zinwentaryzuj systemy AI stosowane w mieście i oceń ich wpływ na prawa mieszkańców.",
+                        2: "Opracuj politykę przejrzystości AI i poinformuj mieszkańców o sposobach wykorzystania ich danych.",
+                        3: "Wdróż procedury audytu algorytmicznego dla systemów podejmujących decyzje dotyczące mieszkańców.",
+                        4: "Sklasyfikuj systemy AI zgodnie z unijnym Aktem o AI i dostosuj procesy do wymogów wysokiego ryzyka.",
+                        5: "Powołaj radę ds. etyki AI z udziałem mieszkańców jako stały organ doradczy miasta."
+                    }
+                };
+
+                const getLevel = (score) => {
+                    if (score <= 20) return 1;
+                    if (score <= 40) return 2;
+                    if (score <= 60) return 3;
+                    if (score <= 80) return 4;
+                    return 5;
+                };
+
+                const renderRadar = (categoryScores) => {
+                    const cx = 160, cy = 160, maxR = 110;
+                    const sectionNames = Object.keys(categoryScores);
+                    const n = sectionNames.length;
+                    const angles = sectionNames.map((_, i) =>
+                        (i * 2 * Math.PI / n) - Math.PI / 2
+                    );
+
+                    const SHORT_LABELS = {
+                        'Strategia i przywództwo': 'Strategia',
+                        'Dane i prywatność': 'Dane',
+                        'Usługi miejskie i przypadki użycia': 'Usługi',
+                        'Zespół i partnerstwa': 'Zespół',
+                        'Etyka i zaufanie mieszkańców': 'Etyka'
+                    };
+
+                    const gridLines = [0.33, 0.66, 1.0].map(factor => {
+                        const r = factor * maxR;
+                        const pts = angles
+                            .map(a => `${(cx + r * Math.cos(a)).toFixed(1)},${(cy + r * Math.sin(a)).toFixed(1)}`)
+                            .join(' ');
+                        return `<polygon points="${pts}" fill="none" stroke="#E6E8EC" stroke-width="1"/>`;
+                    }).join('');
+
+                    const axisLines = angles.map(a =>
+                        `<line x1="${cx}" y1="${cy}" x2="${(cx + maxR * Math.cos(a)).toFixed(1)}" y2="${(cy + maxR * Math.sin(a)).toFixed(1)}" stroke="#E6E8EC" stroke-width="1"/>`
+                    ).join('');
+
+                    const scorePoints = sectionNames.map((s, i) => {
+                        const r = (categoryScores[s] / 100) * maxR;
+                        return `${(cx + r * Math.cos(angles[i])).toFixed(1)},${(cy + r * Math.sin(angles[i])).toFixed(1)}`;
+                    }).join(' ');
+
+                    const labelR = maxR + 20;
+                    const axisLabels = sectionNames.map((s, i) => {
+                        const x = cx + labelR * Math.cos(angles[i]);
+                        const y = cy + labelR * Math.sin(angles[i]);
+                        const cosA = Math.cos(angles[i]);
+                        const anchor = cosA > 0.1 ? 'start' : cosA < -0.1 ? 'end' : 'middle';
+                        const label = SHORT_LABELS[s] || s.split(' ')[0];
+                        return `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="${anchor}" dominant-baseline="middle" font-family="Satoshi,Inter,sans-serif" font-size="11" fill="#6B6B76">${label}</text>`;
+                    }).join('');
+
+                    const overall = Math.round(
+                        Object.values(categoryScores).reduce((a, b) => a + b, 0) / n
+                    );
+
+                    return `
+                        <div class="radar-wrap">
+                            <svg viewBox="0 0 320 320" width="320" height="320" aria-hidden="true">
+                                ${gridLines}
+                                ${axisLines}
+                                <polygon points="${scorePoints}" fill="rgba(196,30,84,0.2)" stroke="#C41E54" stroke-width="2" stroke-linejoin="round"/>
+                                ${axisLabels}
+                                <text x="160" y="152" text-anchor="middle" font-family="Satoshi,Inter,sans-serif" font-size="28" font-weight="700" fill="#111111">${overall}%</text>
+                                <text x="160" y="172" text-anchor="middle" font-family="Geist Mono,monospace" font-size="11" fill="#6B6B76">wynik ogólny</text>
+                            </svg>
+                        </div>
+                    `;
+                };
+
+                const sections = Object.keys(this.questions);
+
+                // Build category scores map (preserving section order)
+                const categoryScores = {};
+                sections.forEach(s => { categoryScores[s] = this.calculateScore(s); });
+
+                // Top-3 worst categories for action list
+                const sorted = [...sections].sort((a, b) => categoryScores[a] - categoryScores[b]);
+                const top3 = sorted.slice(0, 3);
 
                 return `
-                    <div style="font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-brand); margin-bottom: 16px;">Wyniki</div>
-                    <h1 class="title">Ocena Gotowości AI</h1>
+                    <div style="font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:var(--tracking-caps);color:var(--fg-brand);margin-bottom:var(--space-3);">Wyniki oceny</div>
+                    <h1 class="title">Ocena Gotowości AI<br>dla Samorządów</h1>
 
-                    <div class="score">${Math.round(overallScore)}%</div>
-                    <div style="text-align: center; margin-bottom: 32px; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-3);">
-                        ${this.getScoreLabel(overallScore)}
-                    </div>
-
-                    <div class="download-buttons">
-                        <button class="button icon-button" onclick="survey.downloadJSON()">
-                            JSON
-                        </button>
-                        <button class="button secondary icon-button" onclick="survey.downloadCSV()">
-                            CSV
-                        </button>
-                    </div>
+                    ${renderRadar(categoryScores)}
 
                     <h3>Wyniki szczegółowe</h3>
                     <div class="results-grid">
                         ${sections.map(section => {
-                            const score = this.calculateScore(section);
+                            const score = categoryScores[section];
+                            const level = getLevel(score);
                             return `
                                 <div class="result-card">
-                                    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
-                                        <span style="font-size: 14px; font-weight: 500; color: var(--fg-1);">${section}</span>
-                                        <span style="font-size: 20px; font-weight: 700; color: ${this.getScoreColor(score)};">
-                                            ${Math.round(score)}%
-                                        </span>
+                                    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:var(--space-2);">
+                                        <span style="font-size:var(--fs-body);font-weight:500;color:var(--fg-1);">${section}</span>
+                                        <span style="font-size:18px;font-weight:700;color:${this.getScoreColor(score)};">${Math.round(score)}%</span>
                                     </div>
                                     <div class="progress">
-                                        <div class="progress-bar" style="width: ${score}%; background: ${this.getScoreColor(score)};"></div>
+                                        <div class="progress-bar" style="width:${score}%;background:${this.getScoreColor(score)};"></div>
                                     </div>
-                                    <div style="font-size: 12px; color: var(--fg-3); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.06em;">
-                                        ${this.getScoreLabel(score)}
-                                    </div>
+                                    <div style="font-family:var(--font-mono);font-size:11px;color:var(--fg-3);margin-top:var(--space-2);">Poziom ${level}</div>
                                 </div>
                             `;
                         }).join('')}
                     </div>
 
-                    <h3>Rekomendacje</h3>
-                    ${allRecommendations.map(rec => `
-                        <div class="recommendation-card ${rec.type}">
-                            ${rec.text}
-                        </div>
-                    `).join('')}
+                    <h3>3 priorytety działań</h3>
+                    ${top3.map((section, i) => {
+                        const score = categoryScores[section];
+                        const level = getLevel(score);
+                        const key = SECTION_KEY[section] || 'strategia';
+                        const action = ACTIONS[key][level];
+                        const num = String(i + 1).padStart(2, '0');
+                        return `
+                            <div class="action-card">
+                                <div class="action-num">${num}</div>
+                                <div class="action-body">
+                                    <div class="action-eyebrow">${section}</div>
+                                    <div class="action-text">${action}</div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
 
-                    <div class="button-group">
-                        <button class="button secondary" onclick="survey.showResults = false; survey.showReview = true; survey.render()">
-                            ← Przejrzyj odpowiedzi
-                        </button>
-                        <button class="button" onclick="survey.reset()">
-                            Rozpocznij ponownie
-                        </button>
+                    <div class="download-buttons" style="margin-top:var(--space-7);">
+                        <button class="button icon-button" onclick="survey.downloadJSON()">JSON</button>
+                        <button class="button secondary icon-button" onclick="survey.downloadCSV()">CSV</button>
+                    </div>
+                    <div class="button-group" style="margin-top:var(--space-4);">
+                        <button class="button secondary" onclick="survey.showResults=false;survey.showReview=true;survey.render()">← Przejrzyj odpowiedzi</button>
+                        <button class="button" onclick="survey.reset()">Rozpocznij ponownie</button>
                     </div>
                 `;
             }
@@ -1215,10 +1377,6 @@
                                     Następne →
                                 </button>
                             `}
-                        </div>
-
-                        <div class="help-text">
-                            Nawigacja: strzałki klawiatury lub klawisze <span class="kbd">1</span>&ndash;<span class="kbd">5</span> do szybkiego wyboru
                         </div>
                     `;
                 } else {
