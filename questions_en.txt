@@ -13,6 +13,12 @@ Has the city audited its data processing for GDPR compliance in the context of n
 Is there cross-departmental data sharing infrastructure between city services?|Yes|Partially|No
 Does the city have cybersecurity procedures covering new IT systems, including AI?|Yes, regularly audited|Yes, without regular audits|No
 
+#Technical Infrastructure
+Do the city's available computing resources and IT infrastructure support running AI solutions?|Yes, fully|Partially|No
+Does the city have a defined approach to hosting infrastructure for new solutions (on-premises, cloud, or hybrid)?|Yes, adopted approach|Under analysis|No
+Does the city have a test environment for safely piloting new solutions, including AI?|Yes|In preparation|No
+Does the city monitor the performance and operating costs of its IT systems?|Yes, systematically|Partially|No
+
 #City Services & Use Cases
 Have specific city services been identified for AI improvement (traffic, waste, safety, permits, citizen services)?|Yes, comprehensively|Partially|No
 Is there a pilot project or test deployment using AI currently running in the city?|Yes, multiple|Yes, one|No
