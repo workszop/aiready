@@ -621,7 +621,7 @@
             }
             .result-card, .action-card { break-inside: avoid; }
             .radar-wrap { break-inside: avoid; }
-            h3 { break-after: avoid; }
+            .actions-section { break-inside: avoid; }
         }
 
         /* ── Responsive ──────────────────────────────────────────────────────── */
@@ -1246,6 +1246,7 @@
                         }).join('')}
                     </div>
 
+                    <div class="actions-section">
                     <h3>3 priorytety działań</h3>
                     ${top3.map((section, i) => {
                         const score = categoryScores[section];
@@ -1263,6 +1264,7 @@
                             </div>
                         `;
                     }).join('')}
+                    </div>
 
                     <div class="download-buttons" style="margin-top:var(--space-7);">
                         <button class="button icon-button" onclick="window.print()">Drukuj / PDF</button>
