@@ -1,43 +1,30 @@
-#Dojrzałość Organizacyjna
-Czy istnieje formalna strategia rozwoju AI w organizacji?|Tak|W trakcie tworzenia|Nie
-Jak oceniasz świadomość zarządu w zakresie możliwości i ograniczeń AI?|Doskonała|Bardzo dobra|Dobra|Dostateczna|Niedostateczna
-Czy istnieją procesy zarządzania ryzykiem związanym z AI?|Tak|W trakcie wdrażania|Nie
-Jak oceniasz kulturę innowacji w organizacji?|Doskonała|Bardzo dobra|Dobra|Dostateczna|Niedostateczna
-Czy istnieją mechanizmy oceny sukcesu projektów AI?|Tak|W trakcie rozwoju|Nie
-Czy organizacja posiada polityki i procedury zapewniające zgodność z regulacjami prawnymi dotyczącymi AI?|Tak|W trakcie tworzenia|Nie
+#Strategia i przywództwo
+Czy miasto posiada formalną strategię AI lub strategię smart city?|Tak|W opracowaniu|Nie
+Jak oceniasz poziom zrozumienia możliwości i ryzyk AI przez władze miasta (prezydent, rada)?|Doskonały|Bardzo dobry|Dobry|Zadowalający|Niezadowalający
+Czy istnieją procesy zarządzania ryzykiem związanym z wdrożeniem AI?|Tak|W trakcie wdrażania|Nie
+Czy wdrożenie AI jest ujęte w wieloletnim planie rozwoju miasta?|Tak|W planowaniu|Nie
+Czy miasto uczestniczy w krajowych lub unijnych inicjatywach smart city?|Tak|W fazie rozpoznawczej|Nie
 
-#Dane
-Czy organizacja posiada strategię zarządzania danymi?|Tak|W trakcie rozwoju|Nie
-Jak oceniasz jakość danych w organizacji?|Doskonała|Bardzo dobra|Dobra|Dostateczna|Niedostateczna
-Czy istnieją procesy walidacji i czyszczenia danych?|Tak, kompleksowe|Częściowe|Nie
-Czy dane są odpowiednio oznaczone i skategoryzowane?|Tak|Częściowo|Nie
-Jak oceniasz dostępność danych potrzebnych do trenowania modeli AI?|Doskonała|Bardzo dobra|Dobra|Dostateczna|Niedostateczna
-Czy organizacja przestrzega regulacji prawnych dotyczących ochrony danych w kontekście AI?|Tak|Częściowo|Nie
+#Dane i prywatność
+Czy miasto posiada politykę dotyczącą wykorzystania danych mieszkańców w systemach AI?|Tak|W opracowaniu|Nie
+Jak oceniasz jakość i dostępność miejskich danych operacyjnych (ruch, media, zezwolenia)?|Doskonała|Bardzo dobra|Dobra|Zadowalająca|Niezadowalająca
+Czy miasto spełnia wymogi RODO i unijnego Aktu o AI w zakresie zastosowań AI w sektorze publicznym?|Tak|Częściowo|Nie
+Czy istnieje infrastruktura wymiany danych między wydziałami i służbami miejskimi?|Tak|Częściowo|Nie
 
-#Infrastruktura Technologiczna
-Czy dostępne zasoby obliczeniowe i magazyn danych (lokalne lub w chmurze) spełniają wymagania dotyczące trenowania i uruchamiania modeli AI?|Tak, w pełni|Częściowo|Nie
-Czy organizacja posiada wydzielone środowisko (lokalne lub w chmurze) do eksperymentów/testów nowych rozwiązań technologicznych (np. analityka, automatyzacja, AI)?| Tak | W trakcie tworzenia | Nie
-Czy organizacja posiada narzędzia do monitorowania i zarządzania wydajnością środowisk (lokalnych i chmurowych), w tym obserwowalność usług, kosztów i dostępności?| Tak | W trakcie wdrażania | Nie
-Jak oceniasz elastyczność i skalowalność obecnej infrastruktury pod wahania obciążenia oraz szybkie wdrażanie nowych usług?| Doskonała | Bardzo dobra | Dobra | Dostateczna | Niedostateczna
-Czy infrastruktura (niezależnie od miejsca przetwarzania) spełnia wymogi bezpieczeństwa i zgodności (np. RODO, kontrola dostępu, szyfrowanie, rejestry audytowe) z możliwością zastosowania wobec nowych rozwiązań, w tym AI (np. wymagania AI Act)?|Tak|Częściowo|Nie
+#Usługi miejskie i przypadki użycia
+Czy zidentyfikowano konkretne usługi miejskie do usprawnienia przez AI (ruch, odpady, bezpieczeństwo, zezwolenia, obsługa mieszkańców)?|Tak, kompleksowo|Częściowo|Nie
+Czy w mieście trwa pilot lub projekt proof-of-concept z wykorzystaniem AI?|Tak, kilka|Tak, jeden|Nie
+Jak oceniasz gotowość cyfrową mieszkańców do korzystania z usług miejskich opartych na AI?|Doskonała|Bardzo dobra|Dobra|Zadowalająca|Niezadowalająca
+Jak oceniasz integrację rozwiązań AI z istniejącymi systemami informatycznymi miasta?|Doskonała|Bardzo dobra|Dobra|Zadowalająca|Niezadowalająca
 
-#Zespół i Umiejętności
-Czy organizacja posiada dedykowany zespół do projektów AI?|Tak|W trakcie formowania|Nie
-Jak oceniasz poziom kompetencji zespołu w zakresie AI?|Doskonały|Bardzo dobry|Dobry|Dostateczny|Niedostateczny
-Czy istnieje plan rozwoju kompetencji w zakresie AI?|Tak|W trakcie tworzenia|Nie
-Czy zespół ma doświadczenie w realizacji projektów AI?|Znaczące doświadczenie|Średnie doświadczenie|Małe doświadczenie|Brak doświadczenia
-Jak oceniasz współpracę między zespołami technicznymi a biznesowymi?|Doskonała|Bardzo dobra|Dobra|Dostateczna|Niedostateczna
+#Zespół i partnerstwa
+Czy miasto posiada pracowników lub zespół dedykowany projektom AI i innowacjom cyfrowym?|Tak|W trakcie formowania|Nie
+Jak oceniasz poziom kompetencji AI w zespołach IT i innowacji miejskich?|Doskonały|Bardzo dobry|Dobry|Zadowalający|Niezadowalający
+Czy miasto nawiązało partnerstwa z uczelniami, firmami technologicznymi lub innymi miastami w zakresie AI?|Tak, kilka|Tak, jedno|Nie
+Czy istnieje proces oceny i wyboru dostawców rozwiązań AI?|Tak|W opracowaniu|Nie
 
-#Procesy Biznesowe
-Czy zidentyfikowano procesy biznesowe do optymalizacji przez AI?|Tak, kompleksowo|Częściowo|Nie
-Jak oceniasz gotowość procesów do automatyzacji?|Doskonała|Bardzo dobra|Dobra|Dostateczna|Niedostateczna
-Czy istnieją procedury wdrażania rozwiązań AI?|Tak|W trakcie tworzenia|Nie
-Jak oceniasz integrację AI z istniejącymi procesami biznesowymi?|Doskonała|Bardzo dobra|Dobra|Dostateczna|Niedostateczna
-Czy procesy są odpowiednio udokumentowane?|Tak, kompleksowo|Częściowo|Nie
-
-#Finansowanie
-Czy istnieje dedykowany budżet na projekty AI?|Tak|W trakcie planowania|Nie
-Jak oceniasz poziom inwestycji w rozwój AI?|Doskonały|Bardzo dobry|Dobry|Dostateczny|Niedostateczny
-Czy istnieje proces oceny zwrotu z inwestycji w AI?|Tak|W trakcie rozwoju|Nie
-Jak oceniasz dostępność środków na szkolenia w zakresie AI?|Doskonała|Bardzo dobra|Dobra|Dostateczna|Niedostateczna
-Czy organizacja ma plan finansowania długoterminowego rozwoju AI?|Tak|W trakcie tworzenia|Nie
+#Etyka i zaufanie mieszkańców
+Czy mieszkańcy mają dostęp do informacji o sposobie wykorzystania ich danych w systemach AI?|Tak|Częściowo|Nie
+Czy istnieją zabezpieczenia przed stronniczością algorytmiczną w decyzjach wspomaganych przez AI (zezwolenia, pomoc społeczna, bezpieczeństwo publiczne)?|Tak|W trakcie wdrażania|Nie
+Czy miasto posiada publiczną politykę przejrzystości lub etyki AI?|Tak|W opracowaniu|Nie
+Czy miasto oceniło, które zastosowania AI podlegają kategorii wysokiego ryzyka w unijnym Akcie o AI?|Tak|W trakcie|Nie
