@@ -1245,70 +1245,66 @@
                 };
 
                 const sections = Object.keys(this.questions);
-                const overallScore = sections
-                    .reduce((sum, sec) => sum + this.calculateScore(sec), 0) / sections.length;
 
-                const allRecommendations = [];
-                sections.forEach(section => {
-                    const score = this.calculateScore(section);
-                    allRecommendations.push(...this.getRecommendations(score, section));
-                });
+                // Build category scores map (preserving section order)
+                const categoryScores = {};
+                sections.forEach(s => { categoryScores[s] = this.calculateScore(s); });
+
+                // Top-3 worst categories for action list
+                const sorted = [...sections].sort((a, b) => categoryScores[a] - categoryScores[b]);
+                const top3 = sorted.slice(0, 3);
 
                 return `
-                    <div style="font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-brand); margin-bottom: 16px;">Wyniki</div>
-                    <h1 class="title">Ocena Gotowości AI</h1>
+                    <div style="font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:var(--tracking-caps);color:var(--fg-brand);margin-bottom:var(--space-3);">Wyniki oceny</div>
+                    <h1 class="title">Ocena Gotowości AI<br>dla Samorządów</h1>
 
-                    <div class="score">${Math.round(overallScore)}%</div>
-                    <div style="text-align: center; margin-bottom: 32px; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-3);">
-                        ${this.getScoreLabel(overallScore)}
-                    </div>
-
-                    <div class="download-buttons">
-                        <button class="button icon-button" onclick="survey.downloadJSON()">
-                            JSON
-                        </button>
-                        <button class="button secondary icon-button" onclick="survey.downloadCSV()">
-                            CSV
-                        </button>
-                    </div>
+                    ${renderRadar(categoryScores)}
 
                     <h3>Wyniki szczegółowe</h3>
                     <div class="results-grid">
                         ${sections.map(section => {
-                            const score = this.calculateScore(section);
+                            const score = categoryScores[section];
+                            const level = getLevel(score);
                             return `
                                 <div class="result-card">
-                                    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
-                                        <span style="font-size: 14px; font-weight: 500; color: var(--fg-1);">${section}</span>
-                                        <span style="font-size: 20px; font-weight: 700; color: ${this.getScoreColor(score)};">
-                                            ${Math.round(score)}%
-                                        </span>
+                                    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:var(--space-2);">
+                                        <span style="font-size:var(--fs-body);font-weight:500;color:var(--fg-1);">${section}</span>
+                                        <span style="font-size:18px;font-weight:700;color:${this.getScoreColor(score)};">${Math.round(score)}%</span>
                                     </div>
                                     <div class="progress">
-                                        <div class="progress-bar" style="width: ${score}%; background: ${this.getScoreColor(score)};"></div>
+                                        <div class="progress-bar" style="width:${score}%;background:${this.getScoreColor(score)};"></div>
                                     </div>
-                                    <div style="font-size: 12px; color: var(--fg-3); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.06em;">
-                                        ${this.getScoreLabel(score)}
-                                    </div>
+                                    <div style="font-family:var(--font-mono);font-size:11px;color:var(--fg-3);margin-top:var(--space-2);">Poziom ${level}</div>
                                 </div>
                             `;
                         }).join('')}
                     </div>
 
-                    <h3>Rekomendacje</h3>
-                    ${allRecommendations.map(rec => `
-                        <div class="recommendation-card ${rec.type}">
-                            ${rec.text}
-                        </div>
-                    `).join('')}
+                    <h3>3 priorytety działań</h3>
+                    ${top3.map((section, i) => {
+                        const score = categoryScores[section];
+                        const level = getLevel(score);
+                        const key = SECTION_KEY[section] || 'strategia';
+                        const action = ACTIONS[key][level];
+                        const num = String(i + 1).padStart(2, '0');
+                        return `
+                            <div class="action-card">
+                                <div class="action-num">${num}</div>
+                                <div class="action-body">
+                                    <div class="action-eyebrow">${section}</div>
+                                    <div class="action-text">${action}</div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
 
-                    <div class="button-group">
-                        <button class="button secondary" onclick="survey.showResults = false; survey.showReview = true; survey.render()">
-                            ← Przejrzyj odpowiedzi
-                        </button>
-                        <button class="button" onclick="survey.reset()">
-                            Rozpocznij ponownie
-                        </button>
+                    <div class="download-buttons" style="margin-top:var(--space-7);">
+                        <button class="button icon-button" onclick="survey.downloadJSON()">JSON</button>
+                        <button class="button secondary icon-button" onclick="survey.downloadCSV()">CSV</button>
+                    </div>
+                    <div class="button-group" style="margin-top:var(--space-4);">
+                        <button class="button secondary" onclick="survey.showResults=false;survey.showReview=true;survey.render()">← Przejrzyj odpowiedzi</button>
+                        <button class="button" onclick="survey.reset()">Rozpocznij ponownie</button>
                     </div>
                 `;
             }
