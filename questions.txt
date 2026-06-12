@@ -1,38 +1,35 @@
 #Strategia i przywództwo
 Czy miasto posiada strategię transformacji cyfrowej obejmującą AI?|Tak, przyjętą formalnie|W opracowaniu|Nie
-Czy w ostatnich 12 miesiącach władze miasta (prezydent/burmistrz, rada miasta) uczestniczyły w szkoleniu lub warsztatach na temat AI?|Tak, regularnie|Tak, jednorazowo|Nie
+Czy w ciągu ostatnich 12 miesiący władze miasta (prezydent/burmistrz, rada miasta) uczestniczyły w szkoleniu lub warsztatach na temat AI?|Tak, regularnie|Tak, jednorazowo|Nie
 Czy istnieją procesy zarządzania ryzykiem związanym z wdrożeniem AI?|Tak|W trakcie wdrażania|Nie
 Czy wdrożenie AI jest ujęte w wieloletnim planie rozwoju miasta?|Tak|W planowaniu|Nie
 Czy miasto uczestniczy w krajowych lub unijnych inicjatywach smart city?|Tak|W fazie rozpoznawczej|Nie
-Czy w budżecie miasta przewidziano środki na projekty AI lub cyfryzacji?|Tak, osobna pozycja budżetowa|Częściowo, w ramach innych wydatków|Nie
+Czy w budżecie miasta przewidziano środki na projekty z zakresu AI lub transformacji cyfrowej?|Tak, osobna pozycja budżetowa|Częściowo, w ramach innych wydatków|Nie
 
 #Dane i prywatność
-Czy miasto posiada politykę dotyczącą wykorzystania danych mieszkańców w systemach AI?|Tak|W opracowaniu|Nie
-W jakim stopniu miejskie dane operacyjne (ruch, media, zezwolenia) są ucyfrowione i nadają się do analizy?|W pełni — ucyfrowione i ustandaryzowane|Częściowo — część wymaga digitalizacji|W niewielkim stopniu — głównie papierowe lub rozproszone
-Czy miasto przeprowadziło audyt zgodności przetwarzania danych z RODO w kontekście nowych technologii?|Tak|Częściowo|Nie
-Czy istnieje infrastruktura wymiany danych między wydziałami i służbami miejskimi?|Tak|Częściowo|Nie
+Czy miasto posiada politykę dotyczącą wykorzystania danych (w tym danych mieszkańców) w systemach AI?|Tak|W opracowaniu|Nie
+W jakim stopniu miejskie dane (np. dane dotyczące ruchu miejskiego, zezwoleń, przetargów) są ucyfrowione i nadają się do analizy?|W pełni — ucyfrowione i ustandaryzowane|Częściowo — część wymaga digitalizacji|W niewielkim stopniu — głównie papierowe lub rozproszone
 Czy miasto posiada procedury cyberbezpieczeństwa obejmujące nowe systemy informatyczne, w tym AI?|Tak, regularnie audytowane|Tak, bez regularnych audytów|Nie
 
 #Infrastruktura technologiczna
 Czy dostępne zasoby obliczeniowe i infrastruktura IT miasta pozwalają na uruchamianie rozwiązań AI?|Tak, w pełni|Częściowo|Nie
-Czy miasto ma określoną strategię utrzymania infrastruktury dla nowych rozwiązań (lokalnie, w chmurze lub hybrydowo)?|Tak, przyjęte podejście|W trakcie analizy|Nie
-Czy miasto dysponuje środowiskiem testowym do bezpiecznego pilotowania nowych rozwiązań, w tym AI?|Tak|W przygotowaniu|Nie
-Czy miasto monitoruje wydajność i koszty utrzymania systemów informatycznych?|Tak, systematycznie|Częściowo|Nie
+Czy miasto ma strategię utrzymania infrastruktury dla nowych rozwiązań AI (lokalnie, w chmurze lub hybrydowo)?|Tak|W trakcie analizy|Nie
+Czy miasto dysponuje środowiskiem do bezpiecznego testowania nowych rozwiązań AI?|Tak|W przygotowaniu|Nie
 
 #Usługi miejskie i przypadki użycia
 Czy zidentyfikowano konkretne usługi miejskie do usprawnienia przez AI (ruch, odpady, bezpieczeństwo, zezwolenia, obsługa mieszkańców)?|Tak, kompleksowo|Częściowo|Nie
 Czy w mieście trwa projekt pilotażowy lub wdrożenie testowe z wykorzystaniem AI?|Tak, kilka|Tak, jeden|Nie
-Jaki odsetek spraw urzędowych mieszkańcy mogą załatwić w pełni online?|Większość spraw|Wybrane sprawy|Pojedyncze sprawy lub żadne
+Jaką część spraw urzędowych mieszkańcy mogą załatwić obecnie w pełni online?|Większość spraw|Wybrane sprawy|Pojedyncze sprawy
 Czy miejskie systemy informatyczne umożliwiają integrację z nowymi rozwiązaniami (API, standardy wymiany danych)?|Tak, większość systemów|Tylko niektóre systemy|Nie lub brak takiej wiedzy
 
 #Zespół i partnerstwa
 Czy miasto posiada zespół lub wyznaczone osoby odpowiedzialne za projekty cyfryzacji i AI?|Tak|W trakcie formowania|Nie
 Jakie doświadczenie z projektami AI ma zespół miasta?|Samodzielnie prowadzi projekty AI|Prowadzi projekty z pomocą zewnętrzną|Pojedyncze osoby mają podstawową wiedzę|Brak doświadczenia
-Czy miasto współpracuje z uczelniami lub innymi miastami w zakresie AI?|Tak, kilka partnerstw|Tak, jedno partnerstwo|Nie
-Czy istnieje proces oceny i wyboru dostawców rozwiązań AI?|Tak|W opracowaniu|Nie
+Czy miasto nawiązało współpracę z podmiotami zewnętrznymi (np. miastami, uczelniami) w zakresie AI?|Tak, kilka partnerstw|Tak, jedno partnerstwo|Nie
+Czy istnieje proces oceny i wyboru rozwiązań AI?|Tak|W opracowaniu|Nie
 
 #Etyka i zaufanie mieszkańców
 Czy mieszkańcy mają dostęp do informacji o sposobie wykorzystania ich danych w systemach AI?|Tak|Częściowo|Nie
-Czy istnieją zabezpieczenia przed stronniczością algorytmiczną w decyzjach wspomaganych przez AI (zezwolenia, pomoc społeczna, bezpieczeństwo publiczne)?|Tak|W trakcie wdrażania|Nie
-Czy miasto posiada publiczną politykę przejrzystości lub etyki AI?|Tak|W opracowaniu|Nie
-Czy miasto oceniło, które zastosowania AI podlegają kategorii wysokiego ryzyka w unijnym akcie o sztucznej inteligencji (AI Act)?|Tak|W trakcie analizy|Nie
+Czy istnieją zabezpieczenia przed stronniczością w decyzjach wspomaganych przez AI (zezwolenia, pomoc społeczna, bezpieczeństwo publiczne)?|Tak|W trakcie wdrażania|Nie
+Czy miasto posiada publiczną politykę związaną z wykorzystaniem AI?|Tak|W opracowaniu|Nie
+Czy miasto oceniło, które zastosowania AI podlegają kategorii wysokiego ryzyka w rozumieniu AI Act?|Tak|W trakcie analizy|Nie
