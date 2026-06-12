@@ -1,6 +1,6 @@
 #Strategia i przywództwo
 Czy miasto posiada strategię transformacji cyfrowej obejmującą AI?|Tak, przyjętą formalnie|W opracowaniu|Nie
-Czy w ostatnich 12 miesiącach władze miasta (prezydent/burmistrz, rada miasta) uczestniczyły w szkoleniu lub briefingu dotyczącym AI?|Tak, regularnie|Tak, jednorazowo|Nie
+Czy w ostatnich 12 miesiącach władze miasta (prezydent/burmistrz, rada miasta) uczestniczyły w szkoleniu lub warsztatach na temat AI?|Tak, regularnie|Tak, jednorazowo|Nie
 Czy istnieją procesy zarządzania ryzykiem związanym z wdrożeniem AI?|Tak|W trakcie wdrażania|Nie
 Czy wdrożenie AI jest ujęte w wieloletnim planie rozwoju miasta?|Tak|W planowaniu|Nie
 Czy miasto uczestniczy w krajowych lub unijnych inicjatywach smart city?|Tak|W fazie rozpoznawczej|Nie
